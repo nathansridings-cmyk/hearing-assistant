@@ -1,0 +1,5 @@
+Hearing Assistant marketing site
+GitHub Pages (preferred once published):
+  https://nathansridings-cmyk.github.io/hearing-assistant/
+Google Play:
+  https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant

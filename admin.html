@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#58a8dc">
+  <title>Facility waitlist — Hearing Assistant</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hearing Assistant home">
+      <span class="brand-mark small" aria-hidden="true">HA</span>
+      <span>Hearing Assistant</span>
+    </a>
+    <a class="header-link" href="index.html">Back to site</a>
+  </header>
+
+  <main class="admin-main">
+    <div class="section-heading compact">
+      <p class="eyebrow">Admin</p>
+      <h1 class="admin-title">Facility waitlist</h1>
+      <p>Submissions are listed newest first so you can issue free promo codes in order.</p>
+    </div>
+
+    <div id="admin-setup" class="admin-panel" hidden>
+      <h2>Deploy the Apps Script first</h2>
+      <ol class="admin-steps">
+        <li>Create a blank Google Sheet.</li>
+        <li>Extensions → Apps Script → paste <code>facility-waitlist.gs</code>.</li>
+        <li>Run <code>setupSheet()</code> once.</li>
+        <li>Deploy as a web app (Anyone can access).</li>
+        <li>Paste the web app URL into <code>WAITLIST_ENDPOINT</code> in both <code>index.html</code> and <code>admin.html</code>.</li>
+        <li>Change <code>ADMIN_KEY</code> in the script and match it in the key field below (default placeholder: <code>CHANGE_ME</code>).</li>
+      </ol>
+      <p>Until then, facility form submissions go to <strong>simpleassistapps@gmail.com</strong> via FormSubmit.</p>
+    </div>
+
+    <div id="admin-controls" class="admin-controls" hidden>
+      <label for="admin-key">Admin key</label>
+      <div class="admin-key-row">
+        <input id="admin-key" type="password" value="CHANGE_ME" autocomplete="off">
+        <button type="button" class="primary-button" id="admin-refresh">Refresh list</button>
+      </div>
+      <p id="admin-status" class="waitlist-message" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="admin-table-wrap" id="admin-table-wrap" hidden>
+      <table class="admin-table" id="admin-table">
+        <thead>
+          <tr><th scope="col">#</th><th scope="col">Timestamp</th><th scope="col">Facility Name</th><th scope="col">Email</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    // Leave empty until Shane deploys the Apps Script web app URL.
+    // Must match WAITLIST_ENDPOINT in index.html.
+    const WAITLIST_ENDPOINT = '';
+
+    const setup = document.getElementById('admin-setup');
+    const controls = document.getElementById('admin-controls');
+    const wrap = document.getElementById('admin-table-wrap');
+    const tbody = document.querySelector('#admin-table tbody');
+    const status = document.getElementById('admin-status');
+    const keyInput = document.getElementById('admin-key');
+
+    function setStatus(text, kind) {
+      status.textContent = text || '';
+      status.className = 'waitlist-message' + (kind ? ' ' + kind : '');
+    }
+
+    function formatTs(value) {
+      if (!value) return '';
+      var d = new Date(value);
+      if (isNaN(d.getTime())) return String(value);
+      return d.toLocaleString();
+    }
+
+    async function loadList() {
+      if (!WAITLIST_ENDPOINT) return;
+      setStatus('Loading…', 'pending');
+      tbody.innerHTML = '';
+      try {
+        var key = encodeURIComponent(keyInput.value || '');
+        var url = WAITLIST_ENDPOINT + (WAITLIST_ENDPOINT.indexOf('?') === -1 ? '?' : '&') + 'action=list&key=' + key;
+        var res = await fetch(url);
+        var data = await res.json();
+        if (!data || data.ok === false) {
+          setStatus((data && data.error) || 'Could not load list.', 'error');
+          return;
+        }
+        var rows = data.rows || [];
+        if (!rows.length) {
+          setStatus('No facility submissions yet.', 'pending');
+          wrap.hidden = false;
+          return;
+        }
+        rows.forEach(function (row, i) {
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + formatTs(row.timestamp) + '</td><td>' + escapeHtml(row.facilityName) + '</td><td>' + escapeHtml(row.email) + '</td>';
+          tbody.appendChild(tr);
+        });
+        wrap.hidden = false;
+        setStatus(rows.length + ' submission' + (rows.length === 1 ? '' : 's') + ' (newest first).', 'success');
+      } catch (err) {
+        setStatus('Could not load list. Check the endpoint URL and admin key.', 'error');
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    if (!WAITLIST_ENDPOINT) {
+      setup.hidden = false;
+    } else {
+      controls.hidden = false;
+      wrap.hidden = false;
+      document.getElementById('admin-refresh').addEventListener('click', loadList);
+      loadList();
+    }
+  </script>
+</body>
+</html>
