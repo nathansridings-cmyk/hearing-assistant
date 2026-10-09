@@ -6,6 +6,8 @@ FILES
 - index.html: Main marketing page + facility waitlist form (facility name + contact email)
 - admin.html: Simple admin list of facility submissions (needs Apps Script URL)
 - styles.css: Carolina-blue design and mobile layout
+- hearing-assistant-aurora-header.jpg: Top banner only. The rest of the page stays this layout.
+- logo-source.png: App logo artwork. logo-512/192/64/32.png and .webp are the square mark (no wordmark).
 - facility-waitlist.gs: Google Apps Script for a free Google Sheet waitlist
 - qr-code.svg: QR code linking to Hearing Assistant on Google Play
 - WEBSITE-URL.txt: Public website and Google Play addresses
