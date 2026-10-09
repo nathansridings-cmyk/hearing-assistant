@@ -1,13 +1,13 @@
 HEARING ASSISTANT WEBSITE FILES
 
-Hosted on GitHub Pages at https://hearingassistant.app. See WEBSITE-URL.txt.
+Hosted on GitHub Pages (preferred). See WEBSITE-URL.txt for the live URL once published.
 
 FILES
 - index.html: Main marketing page + facility waitlist form (facility name + contact email)
 - admin.html: Simple admin list of facility submissions (needs Apps Script URL)
-- styles.css: Aurora night design matching the Hearing Assistant app
-- logo.svg, aurora-hero.svg: Mark and hero art in the app's aurora palette
-- fonts/: Great Vibes, Montserrat, and Source Sans 3 (SIL Open Font License)
+- styles.css: Carolina-blue design and mobile layout
+- hearing-assistant-aurora-header.jpg: Top banner only. The rest of the page stays this layout.
+- logo.svg: Headphones around a side-view ear, with sound waves
 - facility-waitlist.gs: Google Apps Script for a free Google Sheet waitlist
 - qr-code.svg: QR code linking to Hearing Assistant on Google Play
 - WEBSITE-URL.txt: Public website and Google Play addresses
