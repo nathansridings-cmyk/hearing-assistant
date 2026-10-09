@@ -3,8 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#58a8dc">
-  <meta name="description" content="Hearing Assistant amplifies nearby sounds through wired or Bluetooth earbuds and headphones.">
+  <meta name="theme-color" content="#071018">
+  <meta name="description" content="Hearing Assistant amplifies nearby sounds up to 10× through wired or Bluetooth earbuds and headphones. Simple sound amplification for older adults.">
+  <meta property="og:title" content="Hearing Assistant — Hear More. Live Better.">
+  <meta property="og:description" content="Simple sound amplification for Android. Designed for older adults. Amplify nearby sounds up to 10×.">
+  <meta property="og:url" content="https://hearingassistant.app">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://hearingassistant.app">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
   <title>Hearing Assistant — Hear More. Live Better.</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,123 +18,191 @@
   <a class="skip-link" href="#main">Skip to main content</a>
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Hearing Assistant home">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 64 64" role="img"><path d="M40 49c0 6-4 10-10 10-5 0-9-4-9-9V35c0-13 8-23 21-23 11 0 19 8 19 19 0 8-4 13-10 18-4 3-6 6-6 10"/><path d="M29 34c0-8 4-13 12-13 6 0 10 4 10 10 0 5-2 8-7 12-3 2-4 5-4 8"/><path d="M8 24c4-5 4-13 0-18M15 27c6-7 6-17 0-24"/></svg>
-      </span>
-      <span>Hearing Assistant</span>
+      <img class="brand-logo" src="logo.svg" alt="" width="44" height="40">
+      <span class="brand-text">Hearing <span class="brand-accent">Assistant</span></span>
     </a>
-    <a class="header-link" href="#get-app">Get the App</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#how-it-works">How it works</a>
+      <a href="#facility-signup">Facilities</a>
+      <a class="nav-cta" href="#get-app">Get the app</a>
+    </nav>
   </header>
 
   <main id="main">
     <section class="hero" id="top">
-      <div class="hero-copy">
-        <p class="eyebrow">Simple sound amplification for Android</p>
-        <h1>Hear More.<br><span>Live Better.</span></h1>
-        <p class="lead">Hearing Assistant amplifies conversations, television, and nearby sounds through your wired or Bluetooth earbuds or headphones.</p>
-        <div class="hero-actions">
-          <a class="play-button" href="https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant" target="_blank" rel="noopener">
-            <svg viewBox="0 0 32 36" aria-hidden="true"><path d="M2 2l18 16L2 34z" fill="#6fcf97"/><path d="M20 18l5-5c2 1 4 2 5 3 2 1 2 3 0 4l-5 3z" fill="#ffd166"/><path d="M2 2l23 11-5 5z" fill="#5aa9e6"/><path d="M2 34l23-11-5-5z" fill="#ef476f"/></svg>
-            <span><small>GET IT ON</small>Google Play</span>
-          </a>
-          <a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+      <div class="wrap">
+        <div class="hero-top">
+          <div class="lockup">
+            <div class="mark-row">
+              <svg class="eq" viewBox="0 0 28 80" aria-hidden="true">
+                <rect x="2" y="28" width="6" height="24" rx="3"/>
+                <rect x="11" y="8" width="6" height="64" rx="3"/>
+                <rect x="20" y="18" width="6" height="44" rx="3"/>
+              </svg>
+              <img class="hero-logo" src="logo.svg" alt="" width="210" height="189">
+              <svg class="eq eq-mirror" viewBox="0 0 28 80" aria-hidden="true">
+                <rect x="2" y="28" width="6" height="24" rx="3"/>
+                <rect x="11" y="8" width="6" height="64" rx="3"/>
+                <rect x="20" y="18" width="6" height="44" rx="3"/>
+              </svg>
+            </div>
+            <p class="wordmark" aria-hidden="true"><span>Hearing</span><span>Assistant</span></p>
+          </div>
+          <div class="hero-copy">
+            <h1>Hear More.<br>Live Better.</h1>
+            <div class="script-rule" aria-hidden="true"></div>
+            <p class="subhead">Simple Sound Amplification</p>
+            <p class="ready">Designed for older adults.<br>Easy to use. Always ready.</p>
+            <p class="lead">Hearing Assistant amplifies conversations, television, and nearby sounds up to 10× through your wired or Bluetooth earbuds or headphones.</p>
+            <div class="hero-actions">
+              <a class="play-badge" href="#get-app">
+                <svg viewBox="0 0 32 36" aria-hidden="true"><path d="M2 2l18 16L2 34z" fill="#6fcf97"/><path d="M20 18l5-5c2 1 4 2 5 3 2 1 2 3 0 4l-5 3z" fill="#ffd166"/><path d="M2 2l23 11-5 5z" fill="#5aa9e6"/><path d="M2 34l23-11-5-5z" fill="#ef476f"/></svg>
+                <span><small>COMING SOON</small>Google Play</span>
+              </a>
+              <a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+            </div>
+            <p class="compatibility">Android · Wired and Bluetooth support</p>
+          </div>
         </div>
-        <p class="compatibility">Android · Wired and Bluetooth support</p>
+        <ul class="hero-features">
+          <li>
+            <span class="icon-bubble" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><path d="M10 26a14 14 0 0 1 28 0" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><rect x="7" y="24" width="8" height="14" rx="3.5" fill="currentColor"/><rect x="33" y="24" width="8" height="14" rx="3.5" fill="currentColor"/></svg>
+            </span>
+            Works with earbuds or headphones
+          </li>
+          <li>
+            <span class="icon-bubble" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><path d="M8 20h8l10-8v24L16 28H8z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><path d="M32 18c3.2 2.6 3.2 9.4 0 12M37 13c5.2 4.2 5.2 17.8 0 22" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>
+            </span>
+            Adjustable amplification up to 10×
+          </li>
+          <li>
+            <span class="icon-bubble" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><rect x="13" y="22" width="22" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="3.2"/><path d="M18 22v-5a6 6 0 0 1 12 0v5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>
+            </span>
+            Stays connected when phone is locked or sleeping
+          </li>
+          <li>
+            <span class="icon-bubble" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><rect x="18" y="8" width="12" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="3.2"/><path d="M14 22a10 10 0 0 0 20 0M24 32v6M17 40h14" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>
+            </span>
+            Uses phone or headset microphone
+          </li>
+        </ul>
       </div>
-      <div class="app-card" aria-label="Hearing Assistant app feature preview">
-        <div class="phone-top"><span>Hearing Assistant</span><span class="status-dot">Ready</span></div>
-        <div class="listening-orb">
-          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M39 50c0 6-4 10-10 10-5 0-9-4-9-9V35c0-13 8-23 21-23 11 0 19 8 19 19 0 8-4 13-10 18-4 3-6 6-6 10"/><path d="M29 35c0-8 4-13 12-13 6 0 10 4 10 10 0 5-2 8-7 12-3 2-4 5-4 8"/></svg>
+    </section>
+
+    <section class="section" id="how-it-works" aria-labelledby="how-heading">
+      <div class="wrap">
+        <div class="section-heading">
+          <p class="eyebrow">Made to be easy</p>
+          <h2 id="how-heading">More of the sounds around you, with less fuss.</h2>
         </div>
-        <strong class="hearing-on">Hearing is ON</strong>
-        <p>Listening through Phone Mic</p>
-        <div class="amplify-row"><span>Amplification</span><strong>10×</strong></div>
-        <div class="slider" aria-hidden="true"><span></span></div>
-        <div class="mic-choice"><span class="selected">Phone Mic</span><span>Earbud Mic</span></div>
+        <div class="cards">
+          <article class="card"><span class="num">01</span><h3>One simple control</h3><p>Turn Hearing ON or OFF with one clear, easy-to-find button.</p></article>
+          <article class="card"><span class="num">02</span><h3>Choose your microphone</h3><p>Listen using your phone microphone or a compatible earbud microphone.</p></article>
+          <article class="card"><span class="num">03</span><h3>Amplify up to 10×</h3><p>Choose the level that makes nearby everyday sounds clearer for you.</p></article>
+          <article class="card"><span class="num">04</span><h3>Use what you have</h3><p>Works with wired earbuds and supported Bluetooth earbuds or headphones.</p></article>
+        </div>
       </div>
     </section>
 
-    <section class="feature-section" id="how-it-works">
-      <div class="section-heading">
-        <p class="eyebrow">Made to be easy</p>
-        <h2>More of the sounds around you, with less fuss.</h2>
-      </div>
-      <div class="features">
-        <article><span class="number">01</span><h3>One simple control</h3><p>Turn Hearing ON or OFF with one clear, easy-to-find button.</p></article>
-        <article><span class="number">02</span><h3>Choose your microphone</h3><p>Listen using your phone microphone or a compatible earbud microphone.</p></article>
-        <article><span class="number">03</span><h3>Amplify up to 10×</h3><p>Choose the level that makes nearby everyday sounds clearer for you.</p></article>
-        <article><span class="number">04</span><h3>Use what you have</h3><p>Works with wired earbuds and supported Bluetooth earbuds or headphones.</p></article>
-      </div>
-    </section>
-
-    <section class="purpose-section">
-      <div class="purpose-copy">
-        <p class="eyebrow">Helping People Hear More</p>
-        <h2>A little help with everyday sounds.</h2>
-        <p>Hearing Assistant is designed for older adults and anyone who wants nearby conversations, television, or other everyday sounds to be easier to hear. The app keeps the choices clear and the controls large.</p>
-        <p class="note"><strong>Good to know:</strong> Hearing Assistant is a sound-amplification app. It does not diagnose or treat hearing loss and is not a replacement for a medical hearing aid or professional care.</p>
-      </div>
-      <div class="sound-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-    </section>
-
-    <section class="homes-section" id="facility-signup">
-      <div>
-        <p class="eyebrow light">Nursing &amp; Rest Homes</p>
-        <h2>Request a free promo code for your facility</h2>
-        <p>Demonstrations and complimentary access may be offered to selected residents at participating nursing and rest homes. Enter your facility name and a contact email below to join the waitlist. Shane reviews submissions in order and sends free promo codes.</p>
-      </div>
-      <div class="waitlist-card">
-        <form id="facility-waitlist-form" novalidate>
-          <label for="facility-name">Facility name</label>
-          <input id="facility-name" name="facility" type="text" required autocomplete="organization" placeholder="e.g. Pinecrest Nursing Home" maxlength="200">
-          <label for="contact-email">Contact email</label>
-          <input id="contact-email" name="email" type="email" required autocomplete="email" placeholder="e.g. manager@pinecrest.example" maxlength="200">
-          <button class="primary-button waitlist-submit" type="submit">Request free promo code</button>
-          <p id="waitlist-message" class="waitlist-message" role="status" aria-live="polite" hidden></p>
-        </form>
+    <section class="section purpose" aria-labelledby="purpose-heading">
+      <div class="wrap purpose-grid">
+        <div class="purpose-copy">
+          <p class="eyebrow">Helping People Hear More</p>
+          <h2 id="purpose-heading">A little help with everyday sounds.</h2>
+          <p class="lead">Hearing Assistant is designed for older adults and anyone who wants nearby conversations, television, or other everyday sounds to be easier to hear. The app keeps the choices clear and the controls large.</p>
+          <p class="note"><strong>Good to know:</strong> Hearing Assistant is a sound-amplification app. It does not diagnose or treat hearing loss and is not a replacement for a medical hearing aid or professional care.</p>
+        </div>
+        <div class="device">
+          <div class="device-top"><span>Hearing Assistant</span><span class="status-dot">Ready</span></div>
+          <div class="listening-orb" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M34 50c0 6-4 10-10 10-5 0-9-4-9-9V34c0-12 8-22 20-22 10 0 18 8 18 18 0 7-4 12-9 16-4 3-6 6-6 10" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><path d="M28 34c0-7 4-12 11-12 5 0 9 4 9 9 0 4-2 7-6 11-3 2-4 4-4 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>
+          </div>
+          <strong class="hearing-on">Hearing is ON</strong>
+          <p>Listening through Phone Mic</p>
+          <div class="amplify-row"><span>Amplification</span><strong>10×</strong></div>
+          <div class="slider" aria-hidden="true"><span></span></div>
+          <div class="mic-choice"><span class="selected">Phone Mic</span><span>Earbud Mic</span></div>
+        </div>
       </div>
     </section>
 
-    <section class="help-section">
-      <div class="section-heading compact">
-        <p class="eyebrow">Tester &amp; Help</p>
-        <h2>Trying Hearing Assistant?</h2>
-        <p>Connect your earbuds or headphones, choose a microphone, start at a low amplification level, and turn Hearing ON. Increase the level gradually to a comfortable setting.</p>
-      </div>
-      <div class="help-cards">
-        <article><h3>Reduce feedback</h3><p>Put your earbuds in before turning Hearing ON, and keep the phone away from the earbuds.</p></article>
-        <article><h3>Share feedback</h3><p>Testers can report what worked, what was confusing, and which phone and earbuds they used.</p></article>
+    <section class="section homes" id="facility-signup" aria-labelledby="homes-heading">
+      <div class="wrap homes-grid">
+        <div>
+          <p class="eyebrow">Nursing &amp; Rest Homes</p>
+          <h2 id="homes-heading">Request a free promo code for your facility</h2>
+          <p class="lead">Demonstrations and complimentary access may be offered to selected residents at participating nursing and rest homes. Enter your facility name and a contact email below to join the waitlist. Shane reviews submissions in order and sends free promo codes.</p>
+        </div>
+        <div class="waitlist-card">
+          <form id="facility-waitlist-form" novalidate>
+            <label for="facility-name">Facility name</label>
+            <input id="facility-name" name="facility" type="text" required autocomplete="organization" placeholder="e.g. Pinecrest Nursing Home" maxlength="200">
+            <label for="contact-email">Contact email</label>
+            <input id="contact-email" name="email" type="email" required autocomplete="email" placeholder="e.g. manager@pinecrest.example" maxlength="200">
+            <button class="primary-button waitlist-submit" type="submit">Request free promo code</button>
+            <p id="waitlist-message" class="waitlist-message" role="status" aria-live="polite" hidden></p>
+          </form>
+        </div>
       </div>
     </section>
 
-    <section class="get-section" id="get-app">
-      <div>
-        <p class="eyebrow">Available for Android</p>
-        <h2>Ready to hear more?</h2>
-        <p>Download Hearing Assistant from Google Play, then connect your earbuds or headphones.</p>
-        <a class="play-button dark" href="https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant" target="_blank" rel="noopener">
+    <section class="section" aria-labelledby="help-heading">
+      <div class="wrap">
+        <div class="section-heading compact">
+          <p class="eyebrow">Tester &amp; Help</p>
+          <h2 id="help-heading">Trying Hearing Assistant?</h2>
+          <p class="lead">Connect your earbuds or headphones, choose a microphone, start at a low amplification level, and turn Hearing ON. Increase the level gradually to a comfortable setting.</p>
+        </div>
+        <div class="help-grid">
+          <article class="card"><h3>Reduce feedback</h3><p>Put your earbuds in before turning Hearing ON, and keep the phone away from the earbuds.</p></article>
+          <article class="card"><h3>Share feedback</h3><p>Testers can report what worked, what was confusing, and which phone and earbuds they used.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section get-app" id="get-app" aria-labelledby="get-heading">
+      <div class="wrap get-grid">
+        <div>
+          <p class="eyebrow">Available for Android</p>
+          <h2 id="get-heading">Ready to hear more?</h2>
+          <p class="lead">The Google Play listing for Hearing Assistant is coming soon. This page will be updated when it is public. Nursing and rest homes can request a free promo code now.</p>
+          <div class="actions">
+            <a class="primary-button" href="#facility-signup">Request a facility promo code</a>
+          </div>
+        </div>
+        <p class="play-badge">
           <svg viewBox="0 0 32 36" aria-hidden="true"><path d="M2 2l18 16L2 34z" fill="#6fcf97"/><path d="M20 18l5-5c2 1 4 2 5 3 2 1 2 3 0 4l-5 3z" fill="#ffd166"/><path d="M2 2l23 11-5 5z" fill="#5aa9e6"/><path d="M2 34l23-11-5-5z" fill="#ef476f"/></svg>
-          <span><small>GET IT ON</small>Google Play</span>
-        </a>
+          <span><small>COMING SOON</small>Google Play</span>
+        </p>
       </div>
-      <a class="qr-card" href="https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant" target="_blank" rel="noopener" aria-label="Scan or select to get Hearing Assistant on Google Play">
-        <img src="qr-code.svg" width="184" height="184" alt="QR code for the Hearing Assistant Google Play page">
-        <strong>Scan to Get Hearing Assistant</strong>
-      </a>
     </section>
 
-    <section class="contact-section" id="contact">
-      <div><p class="eyebrow">Contact</p><h2>Questions or interested in a demonstration?</h2></div>
-      <div>
-        <p>For help, testing feedback, or nursing and rest home inquiries, use the facility signup above or contact the developer through the Hearing Assistant listing on Google Play.</p>
-        <a class="primary-button" href="#facility-signup">Request a facility promo code</a>
-        <a class="outline-button contact-outline" href="https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant" target="_blank" rel="noopener">Open Google Play listing</a>
+    <section class="section contact" id="contact" aria-labelledby="contact-heading">
+      <div class="wrap contact-grid">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2 id="contact-heading">Questions or interested in a demonstration?</h2>
+        </div>
+        <div>
+          <p class="lead">For help, testing feedback, or nursing and rest home inquiries, use the facility signup above. The Google Play listing is coming soon.</p>
+          <div class="actions">
+            <a class="primary-button" href="#facility-signup">Request a facility promo code</a>
+            <a class="outline-button" href="#get-app">Google Play coming soon</a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <a class="brand footer-brand" href="#top"><span class="brand-mark small" aria-hidden="true">HA</span><span>Hearing Assistant</span></a>
+  <footer class="site-footer">
+    <a class="brand" href="#top" aria-label="Hearing Assistant home">
+      <img class="brand-logo" src="logo.svg" alt="" width="44" height="40">
+      <span class="brand-text">Hearing <span class="brand-accent">Assistant</span></span>
+    </a>
     <p>Hear More. Live Better.</p>
     <p class="fine-print">© <span id="year"></span> Hearing Assistant. Android and Google Play are trademarks of Google LLC.</p>
   </footer>

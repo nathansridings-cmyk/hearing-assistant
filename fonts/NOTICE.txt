@@ -1,0 +1,6 @@
+Hearing Assistant self-hosts these fonts under the SIL Open Font License, Version 1.1.
+The license text is OFL.txt in this folder. The fonts are unmodified.
+
+Copyright 2010 The Great Vibes Pro Project Authors (https://github.com/googlefonts/great-vibes)
+Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+Copyright 2023 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
