@@ -52,3 +52,7 @@
 .listening-orb img{border-radius:22%}
 @media(max-width:900px){.site-banner{height:200px}}
 .play-button small{font-size:.95rem;letter-spacing:.04em}
+
+.footer-meta{display:flex;flex-direction:column;align-items:flex-end;gap:.4rem}
+.footer-policy{color:var(--navy);font-weight:800;text-underline-offset:3px}
+@media(max-width:900px){.footer-meta{align-items:center}}
