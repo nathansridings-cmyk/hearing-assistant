@@ -86,9 +86,10 @@
         <form id="facility-waitlist-form" novalidate>
           <label for="facility-name">Facility name</label>
           <input id="facility-name" name="facility" type="text" required autocomplete="organization" placeholder="e.g. Pinecrest Nursing Home" maxlength="200">
-          <label for="contact-email">Contact email</label>
+          <label for="contact-email">Your email</label>
           <input id="contact-email" name="email" type="email" required autocomplete="email" placeholder="e.g. manager@pinecrest.example" maxlength="200">
           <button class="primary-button waitlist-submit" type="submit">Request free promo code</button>
+          <p class="fine-print waitlist-note">Promo codes are given in the order requests are received.</p>
           <p id="waitlist-message" class="waitlist-message" role="status" aria-live="polite" hidden></p>
         </form>
       </div>
