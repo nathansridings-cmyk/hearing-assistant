@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102033">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rammy">
+  <title>Rammy Alerts</title>
+  <link rel="manifest" href="/rammy-alerts/manifest.json">
+  <link rel="apple-touch-icon" href="/rammy-alerts/apple-touch-icon.png">
+  <link rel="icon" href="/rammy-alerts/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="app.css">
+  <script>
+    (function () {
+      var last = location.pathname.split("/").pop();
+      if (last && last.indexOf(".") === -1) {
+        location.replace(location.pathname + "/" + location.search + location.hash);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div id="app">
+    <header class="top">
+      <img class="ram" src="ram.webp" alt="">
+      <div>
+        <p class="brand">Rammy Alerts</p>
+        <p id="who" class="sub">Not paired</p>
+      </div>
+    </header>
+    <p id="banner" class="banner hidden" role="status"></p>
+
+    <section id="screen-pair" class="screen">
+      <h1>Pair this phone</h1>
+      <p class="lead">Add this page to the home screen first, then open the Rammy icon and scan Pair Rammy Alerts. Or paste the code. On an iPhone, the browser tab and the icon do not share a pairing code.</p>
+      <a class="big quiet" href="install.html">iPhone and Android steps</a>
+      <label>Your name
+        <input id="your-name" autocomplete="name" placeholder="Shane">
+      </label>
+      <label>Pairing code
+        <textarea id="pair-code" rows="4" placeholder="rammy://pair?..."></textarea>
+      </label>
+      <button type="button" id="scan" class="big gold">Scan QR code</button>
+      <div id="scanner" class="scanner hidden">
+        <video id="scan-video" playsinline autoplay muted></video>
+        <button type="button" id="scan-close" class="big">Close camera</button>
+      </div>
+      <button type="button" id="pair" class="big">Pair</button>
+      <p id="pair-error" class="error" role="alert"></p>
+    </section>
+
+    <section id="screen-home" class="screen hidden">
+      <h1 id="home-title">Mom</h1>
+      <p id="home-role" class="lead"></p>
+      <button type="button" id="call-mom" class="big call">Call Mom</button>
+      <div class="nav">
+        <button type="button" data-go="health">Mom's Health</button>
+        <button type="button" data-go="visitors">Visitors</button>
+        <button type="button" data-go="meds">Meds</button>
+      </div>
+      <aside class="tip">
+        <p><strong>Loud ring when the phone is locked.</strong> This page rings while it is open. Install the free ntfy app and subscribe to the Rammy Alerts code on the family page. That is the ringer when the screen is off. ntfy will not send a lock-screen alert to this page.</p>
+        <a class="big quiet" href="install.html">Add to home screen</a>
+        <button type="button" id="allow-banner" class="big quiet">Allow a banner while this is open</button>
+      </aside>
+    </section>
+
+    <section id="screen-health" class="screen hidden">
+      <button type="button" class="back" data-go="home">Home</button>
+      <h1>Mom's Health</h1>
+      <p id="health-updated" class="lead"></p>
+      <div id="tiles" class="tiles"></div>
+      <h2 id="chart-label">7 days</h2>
+      <div id="chart" class="chart"></div>
+      <p id="health-empty" class="lead hidden">No readings yet.</p>
+      <p class="fine">This is not medical advice.</p>
+    </section>
+
+    <section id="screen-visitors" class="screen hidden">
+      <button type="button" class="back" data-go="home">Home</button>
+      <h1>Visitors</h1>
+      <ul id="visitor-list" class="cards"></ul>
+      <p id="visitor-empty" class="lead">No one is expected yet.</p>
+      <form id="visitor-form">
+        <label>Name <input id="visitor-name" required maxlength="40"></label>
+        <label>Role
+          <select id="visitor-role">
+            <option value="nurse">Nurse</option>
+            <option value="aide">Aide</option>
+            <option value="family">Family</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label>Date <input id="visitor-date" type="date" required></label>
+        <label>Time <input id="visitor-time" type="time" required></label>
+        <button type="submit" class="big">Add visitor</button>
+      </form>
+    </section>
+
+    <section id="screen-meds" class="screen hidden">
+      <button type="button" class="back" data-go="home">Home</button>
+      <h1>Meds</h1>
+      <ul id="med-list" class="cards"></ul>
+      <p id="med-empty" class="lead">No medicines yet.</p>
+      <form id="med-form">
+        <label>Name <input id="med-name" required maxlength="40"></label>
+        <label>Dose <input id="med-dose" maxlength="40" placeholder="1 tablet"></label>
+        <label>Time <input id="med-time" type="time" required></label>
+        <button type="submit" class="big">Save medicine</button>
+      </form>
+      <h2>Change history</h2>
+      <ul id="history" class="history"></ul>
+      <p id="history-empty" class="lead">No changes yet.</p>
+    </section>
+
+    <section id="screen-call" class="screen hidden">
+      <h1 id="call-title">Calling Mom</h1>
+      <p id="call-status" class="lead">Waiting for her screen to answer.</p>
+      <button type="button" id="open-video" class="big gold hidden">Open video</button>
+      <button type="button" id="hangup" class="big help">Hang up</button>
+    </section>
+  </div>
+
+  <section id="ring" class="ring hidden" aria-live="assertive">
+    <div>
+      <img class="ram ring-ram" src="ram.webp" alt="">
+      <p class="ring-kicker">Rammy</p>
+      <h1 id="ring-title">Incoming call</h1>
+      <p id="ring-sub" class="lead">Video call</p>
+      <p id="ring-hear" class="lead hidden">Tap the screen to hear the ringtone.</p>
+    </div>
+    <div class="ring-actions">
+      <button type="button" id="decline" class="big help">Decline</button>
+      <button type="button" id="answer" class="big ok">Answer</button>
+    </div>
+  </section>
+
+  <script src="vendor/jsQR.js"></script>
+  <script src="seal.js"></script>
+  <script src="logic.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
