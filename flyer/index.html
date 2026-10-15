@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#58a8dc">
+  <meta name="description" content="Printable Hearing Assistant door flyer for nursing and rest homes.">
+  <title>Printable flyer — Hearing Assistant</title>
+  <link rel="icon" href="../logo-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../logo-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../logo-192.png">
+  <style>
+    :root { --navy: #092846; --ink: #15324a; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #eef5fa;
+    }
+    .screen-chrome {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem 1rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 1.25rem;
+      background: #fff;
+      border-bottom: 1px solid rgba(9, 40, 70, .08);
+    }
+    .home {
+      font-weight: 800;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: -.02em;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .print-button, .download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: .65rem 1.25rem;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .print-button { border: 0; background: var(--navy); color: #fff; }
+    .download-link { background: #fff; color: var(--navy); border: 2px solid var(--navy); }
+    .flyer {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: min(100% - 2rem, 8.5in);
+      max-height: calc(100vh - 6.5rem);
+      margin: 1.25rem auto 2rem;
+      background: #fff;
+      box-shadow: 0 18px 45px rgba(9, 40, 70, .18);
+    }
+    @page { size: letter; margin: 0; }
+    @media print {
+      body > :not(.flyer) { display: none !important; }
+      html, body {
+        width: 8.5in;
+        height: 11in;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #fff;
+      }
+      .flyer {
+        width: 8.5in;
+        height: 11in;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        box-shadow: none;
+        object-fit: fill;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-chrome">
+    <a class="home" href="/">Hearing Assistant</a>
+    <div class="actions">
+      <button class="print-button" type="button" onclick="window.print()">Print</button>
+      <a class="download-link" href="/flyer/door-flyer.pdf">Download PDF</a>
+    </div>
+  </div>
+  <img class="flyer" src="door-flyer.png" alt="Hearing Assistant door flyer. Hear More. Live Better. Free copies of the app for residents.">
+</body>
+</html>
