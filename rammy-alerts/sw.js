@@ -1,24 +1,26 @@
 /* App shell for Rammy Alerts. This does not receive ntfy Web Push.
    ntfy only pushes to a page hosted on the same ntfy server. */
 
-const CACHE = "rammy-alerts-pwa-v1";
+const CACHE = "rammy-alerts-pwa-v2";
 const SHELL = [
-  "/rammy-alerts/",
-  "/rammy-alerts/index.html",
-  "/rammy-alerts/install.html",
-  "/rammy-alerts/manifest.json",
-  "/rammy-alerts/app.css",
-  "/rammy-alerts/app.js",
-  "/rammy-alerts/logic.js",
-  "/rammy-alerts/seal.js",
-  "/rammy-alerts/ram.webp",
-  "/rammy-alerts/icon-192.png",
-  "/rammy-alerts/icon-512.png",
-  "/rammy-alerts/icon-maskable-512.png",
-  "/rammy-alerts/apple-touch-icon.png",
-  "/rammy-alerts/vendor/jsQR.js",
-  "/rammy-alerts/fonts/AtkinsonHyperlegible-Regular.woff2",
-  "/rammy-alerts/fonts/AtkinsonHyperlegible-Bold.woff2"
+  "./",
+  "./index.html",
+  "./install.html",
+  "./manifest.json",
+  "./app.css",
+  "./app.js",
+  "./logic.js",
+  "./call.js",
+  "./seal.js",
+  "./vendor/peerjs.min.js",
+  "./ram.webp",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-maskable-512.png",
+  "./apple-touch-icon.png",
+  "./vendor/jsQR.js",
+  "./fonts/AtkinsonHyperlegible-Regular.woff2",
+  "./fonts/AtkinsonHyperlegible-Bold.woff2"
 ];
 
 self.addEventListener("install", (event) => {
@@ -47,7 +49,7 @@ self.addEventListener("fetch", (event) => {
         }
         return response;
       })
-      .catch(() => caches.match(event.request).then((hit) => hit || caches.match("/rammy-alerts/index.html")))
+      .catch(() => caches.match(event.request).then((hit) => hit || caches.match("./index.html")))
   );
 });
 
@@ -58,7 +60,7 @@ self.addEventListener("notificationclick", (event) => {
       for (let i = 0; i < clients.length; i += 1) {
         if (clients[i].focus) return clients[i].focus();
       }
-      if (self.clients.openWindow) return self.clients.openWindow("/rammy-alerts/");
+      if (self.clients.openWindow) return self.clients.openWindow("./");
       return undefined;
     })
   );

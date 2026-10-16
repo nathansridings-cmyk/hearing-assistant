@@ -117,7 +117,16 @@
     node.classList.toggle("hidden", !text);
   }
 
+  function linkedRoom() {
+    if (!window.RammyCall || preview) return "";
+    return RammyCall.roomFromUrl(location.href);
+  }
+
   function render() {
+    if (linkedRoom() && document.body.dataset.callLeft !== "1") {
+      openRoom(location.href, "Video call");
+      return;
+    }
     $("who").textContent = paired()
       ? (state.personName || "Mom") + (state.role === "nurse" ? " · Nurse" : "")
       : "Not paired";
@@ -403,7 +412,7 @@
       navigator.serviceWorker.ready.then((reg) => {
         reg.showNotification(title, {
           body: body,
-          icon: "/rammy-alerts/icon-192.png",
+          icon: new URL("icon-192.png", location.href).href,
           tag: "rammy-ring"
         });
       }).catch(function () {});
@@ -413,34 +422,31 @@
   function openRoom(url, title) {
     ringer.stop();
     $("ring").classList.add("hidden");
-    if (window.RammyNative && RammyNative.openRoom) {
-      RammyNative.openRoom(url);
+    const room = window.RammyCall ? (RammyCall.roomFromUrl(url) || RammyCall.cleanRoom(url)) : "";
+    $("call-title").textContent = title || "Video call";
+    show("call");
+    if (location.hash !== "#call") location.hash = "#call";
+    const open = $("open-video");
+    if (open) open.classList.add("hidden");
+    if (!room) {
+      $("call-status").textContent = "This alert has no call room.";
       return;
     }
-    $("call-title").textContent = title || "Video call";
-    $("call-status").textContent = "The video opens in this phone. If it stays blank, use Open video.";
-    show("call");
-    location.hash = "#call";
-    const open = $("open-video");
-    open.classList.toggle("hidden", !url);
-    open.onclick = () => {
-      if (!url || preview) {
-        $("call-status").textContent = "Sample only. A paired phone opens the video here.";
-        return;
-      }
-      location.href = url;
-    };
-    if (url && !preview) {
-      const frame = document.createElement("iframe");
-      frame.src = url;
-      frame.title = "Video call";
-      frame.allow = "camera; microphone; fullscreen; display-capture";
-      frame.style.cssText = "width:100%;height:46vh;border:0;border-radius:20px;background:#000;margin-top:12px";
-      const host = $("screen-call");
-      const old = host.querySelector("iframe");
-      if (old) old.remove();
-      host.insertBefore(frame, open);
+    if (preview) {
+      $("call-status").textContent = "Sample only. A paired phone joins this room.";
+      return;
     }
+    const params = new URLSearchParams(String(url).split("?")[1] || "");
+    RammyCall.start({
+      room: room,
+      role: "family",
+      name: params.get("name") || state.yourName || "Family",
+      remote: $("call-remote"),
+      local: $("call-local"),
+      status: $("call-status"),
+      cameraButton: $("call-camera"),
+      hearButton: $("call-hear")
+    });
   }
 
   $("pair").addEventListener("click", async () => {
@@ -548,6 +554,8 @@
 
   $("hangup").addEventListener("click", async () => {
     ringer.stop();
+    document.body.dataset.callLeft = "1";
+    if (window.RammyCall) RammyCall.stop();
     const frame = $("screen-call").querySelector("iframe");
     if (frame) frame.remove();
     $("open-video").classList.add("hidden");
@@ -675,7 +683,7 @@
     const screen = new URLSearchParams(location.search).get("screen");
     if (screen === "ring") {
       render();
-      startRing({ ring: true, kind: "call", title: "Mom is calling", room: "https://meet.jit.si/rammy-sample01234567" }, "preview");
+      startRing({ ring: true, kind: "call", title: "Mom is calling", room: "https://hearingassistant.app/rammy-alerts/?call=rammy-0123abcdef456789" }, "preview");
       return;
     }
     if (screen) location.hash = "#" + screen;
@@ -701,7 +709,11 @@
 
   function registerWorker() {
     if (!("serviceWorker" in navigator) || location.protocol === "file:") return;
-    navigator.serviceWorker.register("/rammy-alerts/sw.js", { scope: "/rammy-alerts/" }).catch(function () {});
+    const last = location.pathname.split("/").pop();
+    const dir = last && last.indexOf(".") !== -1
+      ? location.pathname.replace(/[^/]*$/, "")
+      : (location.pathname.endsWith("/") ? location.pathname : location.pathname + "/");
+    navigator.serviceWorker.register(dir + "sw.js").catch(function () {});
   }
 
   function watchChannel() {
