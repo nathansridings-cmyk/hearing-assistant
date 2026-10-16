@@ -55,12 +55,20 @@
     <section id="screen-home" class="screen hidden">
       <h1 id="home-title">Mom</h1>
       <p id="home-role" class="lead"></p>
+      <section id="missed" class="missed hidden">
+        <p id="missed-text">Missed call</p>
+        <button type="button" id="call-back" class="big gold">Call back</button>
+      </section>
       <button type="button" id="call-mom" class="big call">Call Mom</button>
       <div class="nav">
         <button type="button" data-go="health">Mom's Health</button>
         <button type="button" data-go="visitors">Visitors</button>
         <button type="button" data-go="meds">Meds</button>
       </div>
+      <aside class="tip help-card" id="how-to-answer">
+        <h2>How to answer</h2>
+        <p>When Mom calls, the alert says tap Answer. Open it, then tap the big green Answer button. Tap Decline if you cannot talk. A missed call stays on this page with Call back.</p>
+      </aside>
       <aside class="tip">
         <p><strong>Loud ring when the phone is locked.</strong> This page rings while it is open. Install the free ntfy app and subscribe to the Rammy Alerts code on the family page. That is the ringer when the screen is off. ntfy will not send a lock-screen alert to this page.</p>
         <a class="big quiet" href="install.html">Add to home screen</a>
@@ -114,6 +122,12 @@
       <h2>Change history</h2>
       <ul id="history" class="history"></ul>
       <p id="history-empty" class="lead">No changes yet.</p>
+    </section>
+
+    <section id="screen-guest" class="screen hidden">
+      <h1>Call Mom</h1>
+      <p id="guest-status" class="lead">Tap once to call. This page is only for the call.</p>
+      <button type="button" id="guest-call" class="big call">Call Mom</button>
     </section>
 
     <section id="screen-call" class="screen hidden">

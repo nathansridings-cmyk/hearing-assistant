@@ -1,7 +1,7 @@
 /* App shell for Rammy Alerts. This does not receive ntfy Web Push.
    ntfy only pushes to a page hosted on the same ntfy server. */
 
-const CACHE = "rammy-alerts-pwa-v2";
+const CACHE = "rammy-alerts-pwa-v4";
 const SHELL = [
   "./",
   "./index.html",
