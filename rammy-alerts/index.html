@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Rammy">
   <title>Rammy Alerts</title>
-  <link rel="manifest" href="/rammy-alerts/manifest.json">
-  <link rel="apple-touch-icon" href="/rammy-alerts/apple-touch-icon.png">
-  <link rel="icon" href="/rammy-alerts/icon-192.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
   <link rel="stylesheet" href="app.css">
   <script>
     (function () {
@@ -117,8 +117,14 @@
     </section>
 
     <section id="screen-call" class="screen hidden">
+      <div id="call-stage">
+        <video id="call-remote" autoplay playsinline></video>
+        <video id="call-local" autoplay playsinline muted></video>
+        <p id="call-status" class="lead">Waiting for her screen to answer.</p>
+        <button type="button" id="call-camera" class="big gold hidden">Turn on camera</button>
+        <button type="button" id="call-hear" class="big gold hidden">Tap to hear</button>
+      </div>
       <h1 id="call-title">Calling Mom</h1>
-      <p id="call-status" class="lead">Waiting for her screen to answer.</p>
       <button type="button" id="open-video" class="big gold hidden">Open video</button>
       <button type="button" id="hangup" class="big help">Hang up</button>
     </section>
@@ -139,6 +145,8 @@
   </section>
 
   <script src="vendor/jsQR.js"></script>
+  <script src="vendor/peerjs.min.js"></script>
+  <script src="call.js"></script>
   <script src="seal.js"></script>
   <script src="logic.js"></script>
   <script src="app.js"></script>

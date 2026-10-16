@@ -23,15 +23,26 @@
     return { role: role, topic: topic, server: server, key: key, name: String(params.get("name") || "") };
   }
 
+  function roomIdOf(click) {
+    const match = String(click || "").match(/[?&]call=(rammy-[a-f0-9]{16})/i);
+    return match ? match[1].toLowerCase() : "";
+  }
+
+  function callPage(room) {
+    if (!room) return "";
+    return "https://hearingassistant.app/rammy-alerts/?call=" + room;
+  }
+
   function shouldRing(message) {
     const title = String((message && message.title) || "");
     const click = String((message && message.click) || "");
-    const room = click.indexOf("https://meet.jit.si/rammy-") === 0 || click.indexOf("http://meet.jit.si/rammy-") === 0;
+    const room = roomIdOf(click);
+    const page = callPage(room);
     if (room || /is calling/i.test(title)) {
-      return { ring: true, kind: /check in/i.test(title) ? "checkin" : /help/i.test(title) ? "help" : "call", title: title || "Incoming call", room: click };
+      return { ring: true, kind: /check in/i.test(title) ? "checkin" : /help/i.test(title) ? "help" : "call", title: title || "Incoming call", room: page };
     }
-    if (/please check in/i.test(title)) return { ring: true, kind: "checkin", title: title, room: click };
-    if (/help requested/i.test(title)) return { ring: true, kind: "help", title: title, room: click };
+    if (/please check in/i.test(title)) return { ring: true, kind: "checkin", title: title, room: page };
+    if (/help requested/i.test(title)) return { ring: true, kind: "help", title: title, room: page };
     return { ring: false, kind: "", title: title, room: "" };
   }
 
