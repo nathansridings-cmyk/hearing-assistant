@@ -307,6 +307,15 @@ Mom's screen is the home peer. The family page calls that peer.
       session.connected = true;
       play(session, session.remote, remote, true);
       say(session.status, "Connected.");
+      if (session.role === "home" && !session.toldHome && typeof fetch === "function") {
+        session.toldHome = true;
+        const notice = fetch("/api/call-answered", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ room: session.room })
+        });
+        if (notice && notice.catch) notice.catch(function () {});
+      }
     });
     media.on("close", function () {
       if (current !== session || session.media !== media) return;

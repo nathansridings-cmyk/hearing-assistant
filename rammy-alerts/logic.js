@@ -58,5 +58,39 @@
     };
   }
 
-  return { parsePair: parsePair, shouldRing: shouldRing, ringFromPlain: ringFromPlain };
+  function openIntent(href) {
+    const text = String(href || "");
+    const query = text.indexOf("?") === -1 ? "" : text.slice(text.indexOf("?") + 1).split("#")[0];
+    const params = new URLSearchParams(query);
+    const declined = String(params.get("decline") || "").trim().toLowerCase();
+    if (/^rammy-[a-f0-9]{16}$/.test(declined)) return { screen: "decline", room: declined, title: "" };
+    if (params.get("callback") === "1") return { screen: "callback", room: "", title: "" };
+    const room = roomIdOf(text);
+    if (params.has("guest")) {
+      const token = String(params.get("guest") || "").trim().toLowerCase();
+      const clean = /^[a-f0-9]{32}$/.test(token) ? token : "";
+      return { screen: "guest", room: room, token: clean, title: "Call Mom" };
+    }
+    if (room) {
+      const who = String(params.get("who") || "").trim() || "Mom";
+      return { screen: "ring", room: room, title: who + " is calling - tap Answer" };
+    }
+    return { screen: "", room: "", title: "" };
+  }
+
+  function missedCall(message) {
+    const title = String((message && message.title) || "");
+    const click = String((message && message.click) || "");
+    if (!/missed call/i.test(title)) return { missed: false, title: title, click: "" };
+    return { missed: true, title: title, click: click };
+  }
+
+  return {
+    parsePair: parsePair,
+    shouldRing: shouldRing,
+    ringFromPlain: ringFromPlain,
+    openIntent: openIntent,
+    missedCall: missedCall,
+    callPage: callPage
+  };
 });

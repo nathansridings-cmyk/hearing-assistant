@@ -134,5 +134,9 @@ textarea { min-height: 110px; }
 .ring-ram { width: 112px; height: 128px; }
 .ring-kicker { font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 8px 0 0; }
 .ring-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ring-actions .big { min-height: 120px; font-size: 34px; }
+.missed { background: #3a2a12; border-radius: 20px; padding: 14px 14px 8px; margin: 8px 0 4px; }
+.missed p { margin: 0; font-size: 22px; font-weight: 700; }
+.help-card h2 { margin: 0 0 8px; font-size: 28px; }
 .row-actions { display: flex; gap: 8px; margin-top: 8px; }
 .row-actions button { flex: 1; min-height: 52px; border-radius: 14px; border: 0; background: #17324d; font-weight: 700; }

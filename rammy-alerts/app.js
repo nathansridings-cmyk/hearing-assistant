@@ -3,6 +3,9 @@
   const preview = new URLSearchParams(location.search).get("preview") === "1";
   const state = load();
   let ringing = null;
+  let guestMode = false;
+  let guestToken = "";
+  let guestRoom = "";
   const seen = new Set();
 
   const $ = (id) => document.getElementById(id);
@@ -28,7 +31,8 @@
       health: null,
       visitors: [],
       medications: [],
-      changes: []
+      changes: [],
+      missed: []
     };
   }
 
@@ -80,7 +84,8 @@
       ],
       changes: [
         { who: "Shane", what: "Added Morning vitamin, 1 tablet, at 8:00 AM.", when: "2026-10-12T09:00:00", role: "family" }
-      ]
+      ],
+      missed: []
     };
   }
 
@@ -105,7 +110,7 @@
   }
 
   function show(name) {
-    ["pair", "home", "health", "visitors", "meds", "call"].forEach((id) => {
+    ["pair", "home", "health", "visitors", "meds", "call", "guest"].forEach((id) => {
       $("screen-" + id).classList.toggle("hidden", id !== name);
     });
     if (name !== "ring") $("ring").classList.add("hidden");
@@ -117,16 +122,116 @@
     node.classList.toggle("hidden", !text);
   }
 
+  function consumeLaunch() {
+    if (!window.RammyLogic || document.body.dataset.callLeft === "1" || document.body.dataset.answered === "1") {
+      return false;
+    }
+    const intent = RammyLogic.openIntent(location.href);
+    if (intent.screen === "decline") {
+      const clean = location.pathname + (location.hash || "");
+      history.replaceState(null, "", clean);
+      dismissRing(intent.room, true);
+      return false;
+    }
+    if (intent.screen === "callback") {
+      const clean = location.pathname + (location.hash || "");
+      history.replaceState(null, "", clean);
+      startCallback();
+      return true;
+    }
+    if (intent.screen === "guest") {
+      showGuest(intent);
+      return true;
+    }
+    if (intent.screen === "ring") {
+      const who = state.personName || "Mom";
+      startRing({
+        ring: true,
+        kind: "call",
+        title: who + " is calling - tap Answer",
+        room: RammyLogic.callPage(intent.room)
+      }, "url");
+      return true;
+    }
+    return false;
+  }
+
+  function renderMissed() {
+    const box = $("missed");
+    if (!box) return;
+    const rows = state.missed || [];
+    box.classList.toggle("hidden", !rows.length);
+    const text = $("missed-text");
+    if (text && rows.length) text.textContent = rows[rows.length - 1].title || "Missed call";
+  }
+
+  function rememberMissed(item) {
+    const row = {
+      title: String(item.title || "Missed call"),
+      click: String(item.click || ""),
+      at: Date.now()
+    };
+    state.missed = (state.missed || []).concat([row]).slice(-5);
+    save();
+    renderMissed();
+  }
+
+  function dismissRing(room, tellHome) {
+    ringer.stop();
+    ringing = null;
+    document.body.dataset.callLeft = "1";
+    $("ring").classList.add("hidden");
+    if (tellHome && !preview && paired() && room && state.role === "family") {
+      send("decline", { room: room }).catch(function () {});
+    }
+    if (paired()) show("home");
+  }
+
+  async function startCallback() {
+    document.body.dataset.callLeft = "1";
+    $("call-title").textContent = "Calling " + (state.personName || "Mom");
+    $("call-status").textContent = preview
+      ? "Sample only. On a paired phone, her screen answers by itself."
+      : "Waiting for her screen to answer.";
+    show("call");
+    if (location.hash !== "#call") location.hash = "#call";
+    if (preview || !paired() || state.role !== "family") {
+      if (!preview && !paired()) banner("Pair this phone, then tap Call back.");
+      return;
+    }
+    try {
+      await send("call_mom", { by: state.yourName || "Family", device: state.device });
+    } catch (error) {
+      banner("Can't reach the alert channel.");
+    }
+  }
+
   function linkedRoom() {
     if (!window.RammyCall || preview) return "";
     return RammyCall.roomFromUrl(location.href);
   }
 
-  function render() {
-    if (linkedRoom() && document.body.dataset.callLeft !== "1") {
-      openRoom(location.href, "Video call");
+  function showGuest(intent) {
+    guestMode = true;
+    guestToken = intent.token || "";
+    guestRoom = intent.room || "";
+    show("guest");
+    $("who").textContent = "Call only";
+    const button = $("guest-call");
+    const status = $("guest-status");
+    if (!guestToken || !guestRoom) {
+      button.disabled = true;
+      status.textContent = "This call link is not right.";
       return;
     }
+    button.disabled = false;
+    status.textContent = "Tap once to call. This page is only for the call.";
+  }
+
+  function render() {
+    if (guestMode) return;
+    if (consumeLaunch()) return;
+    renderMissed();
     $("who").textContent = paired()
       ? (state.personName || "Mom") + (state.role === "nurse" ? " · Nurse" : "")
       : "Not paired";
@@ -307,11 +412,22 @@
       applyPlain(plain);
       return;
     }
+    const missed = RammyLogic.missedCall(item);
+    if (missed.missed) {
+      rememberMissed(item);
+      if (ringing) {
+        ringer.stop();
+        ringing = null;
+        $("ring").classList.add("hidden");
+      }
+      return;
+    }
     const decision = RammyLogic.shouldRing(item);
     if (decision.ring) startRing(decision, item.id);
   }
 
   function applyPlain(plain) {
+    if (guestMode) return;
     const body = plain.body || {};
     if (plain.kind === "state") {
       state.personName = body.person_name || state.personName;
@@ -356,7 +472,15 @@
       const ok = this.unlock();
       const hear = $("ring-hear");
       if (hear) hear.classList.toggle("hidden", ok);
-      if (!ok) return;
+      const buzz = () => {
+        if (!navigator.vibrate) return;
+        try { navigator.vibrate([600, 300, 600, 300]); } catch (error) { /* this browser will not vibrate */ }
+      };
+      buzz();
+      if (!ok) {
+        this.timer = window.setInterval(buzz, 2600);
+        return;
+      }
       const pulse = () => {
         if (token !== this.token || !this.ctx) return;
         const now = this.ctx.currentTime;
@@ -377,8 +501,7 @@
         });
       };
       pulse();
-      this.timer = window.setInterval(pulse, 2600);
-      if (navigator.vibrate) navigator.vibrate([600, 300, 600, 1200]);
+      this.timer = window.setInterval(() => { pulse(); buzz(); }, 2600);
     },
     silence() {
       if (this.timer) window.clearInterval(this.timer);
@@ -566,21 +689,65 @@
     }
   });
 
-  $("answer").addEventListener("click", () => {
+  $("answer").addEventListener("click", async () => {
     ringer.stop();
     const room = ringing && ringing.room;
+    const id = window.RammyCall ? RammyCall.roomFromUrl(room) : "";
     ringing = null;
+    document.body.dataset.answered = "1";
     if (room) openRoom(room, $("ring-title").textContent);
     else {
       $("ring").classList.add("hidden");
       banner("There is no video room with this alert.");
     }
+    if (!preview && paired() && id) {
+      try { await send("answered", { room: id }); } catch (error) { /* she still sees him join */ }
+    }
   });
 
   $("decline").addEventListener("click", () => {
-    ringer.stop();
-    ringing = null;
-    $("ring").classList.add("hidden");
+    const room = ringing && window.RammyCall ? RammyCall.roomFromUrl(ringing.room) : "";
+    dismissRing(room, true);
+  });
+
+  $("guest-call").addEventListener("click", async () => {
+    if (!guestToken || !guestRoom) return;
+    const button = $("guest-call");
+    button.disabled = true;
+    $("guest-status").textContent = "Calling Mom...";
+    try {
+      const response = await fetch("https://ntfy.sh/" + encodeURIComponent(guestToken), {
+        method: "POST",
+        body: "guest-call " + guestRoom
+      });
+      if (!response.ok) throw new Error("ntfy");
+    } catch (error) {
+      button.disabled = false;
+      $("guest-status").textContent = "I couldn't reach Rammy.";
+      return;
+    }
+    $("call-title").textContent = "Calling Mom";
+    $("call-status").textContent = "Waiting for her screen to answer.";
+    show("call");
+    if (window.RammyCall) {
+      RammyCall.start({
+        room: guestRoom,
+        role: "family",
+        name: "Guest",
+        remote: $("call-remote"),
+        local: $("call-local"),
+        status: $("call-status"),
+        cameraButton: $("call-camera"),
+        hearButton: $("call-hear")
+      });
+    }
+  });
+
+  $("call-back").addEventListener("click", () => {
+    state.missed = [];
+    save();
+    renderMissed();
+    startCallback();
   });
 
   $("ring").addEventListener("click", (event) => {
@@ -732,5 +899,5 @@
 
   render();
   registerWorker();
-  watchChannel();
+  if (!guestMode) watchChannel();
 })();
