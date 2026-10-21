@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#58a8dc">
+  <meta name="description" content="Privacy policy for Password Wallet, an on-device password manager for Android and iPhone.">
+  <title>Privacy policy — Password Wallet</title>
+  <link rel="icon" href="../../logo-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../../logo-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../../logo-192.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    .policy-page { background: #f7fbfe; }
+    .policy-main {
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.2rem, 5vw, 2rem) 4.5rem;
+    }
+    .policy-main h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.15;
+      letter-spacing: -.04em;
+      margin-bottom: .35rem;
+    }
+    .policy-main h2 {
+      font-size: 1.45rem;
+      line-height: 1.25;
+      letter-spacing: -.03em;
+      margin-top: 2.15rem;
+      margin-bottom: .55rem;
+    }
+    .policy-main p, .policy-main li { font-size: 1.125rem; color: var(--ink); }
+    .policy-main ul { margin: 0 0 1rem; padding-left: 1.35rem; }
+    .policy-main li { margin: .35rem 0; }
+    .policy-main a {
+      color: #2676aa;
+      font-weight: 700;
+      text-underline-offset: 3px;
+    }
+    .policy-main .meta {
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 1.35rem;
+    }
+    .policy-main strong { color: var(--navy); }
+  </style>
+</head>
+<body class="policy-page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <a class="brand" href="../../index.html" aria-label="Hearing Assistant home">
+      <img class="brand-logo" src="../../logo-192.png" alt="" width="48" height="48">
+      <span>Hearing Assistant</span>
+    </a>
+    <a class="header-link" href="../../index.html#get-app">Get the App</a>
+  </header>
+
+  <main id="main" class="policy-main">
+    <h1>Privacy policy — Password Wallet</h1>
+    <p class="meta">Last updated: October 20, 2026. This policy describes version 1.0.</p>
+    <p>Password Wallet is a free password manager. It has no account and no sign-in server. The developer does not collect, receive, or sell personal information. The app does not use analytics, advertising, or tracking.</p>
+
+    <h2>Nothing is sent off the device</h2>
+    <p>The Android app does not request Internet permission, so it cannot upload the vault. The iPhone app has no network code for the vault. Logins, the master password, and settings stay on the device. Opening a store search in Settings hands a link to the phone’s store app. That is not a vault upload.</p>
+
+    <h2>What stays on the device</h2>
+    <ul>
+      <li>The logins you type: title, username, password, website, and notes. They are encrypted.</li>
+      <li>A random salt and an encrypted copy of the vault key, used to check the master password. The master password itself is never stored.</li>
+      <li>Settings: theme, auto-lock, clipboard timer, how often to ask for the master password, and whether the 10-try erase option is on.</li>
+      <li>If biometrics are on, a hardware-wrapped copy of the vault key. The app does not keep a fingerprint or face. The operating system handles biometrics.</li>
+    </ul>
+
+    <h2>Encryption</h2>
+    <p>The vault is encrypted with AES-256-GCM. A random vault key does that encryption. The master password is stretched with Argon2id and a random salt that belongs to this vault. A wrong password cannot read the vault.</p>
+    <p>Biometric unlock only releases the hardware-wrapped key. On Android that key lives in the Android Keystore, and in StrongBox when the phone has it. On iPhone it is wrapped by the Secure Enclave when the device can create that key, otherwise by the Keychain, and it is available only on this device while the device is unlocked. The master password is required after a restart and again after the number of days you choose.</p>
+
+    <h2>Guessing and the clipboard</h2>
+    <p>Wrong master passwords make the next try wait longer, up to one hour. Missed fingerprints and face scans do not count. Erasing the vault after 10 wrong master passwords is off unless you confirm it. There is no cloud copy to restore.</p>
+    <p>Copied secrets are marked sensitive and cleared on this device after the time you pick. The default is 30 seconds. The app does not sync the clipboard to another device.</p>
+
+    <h2>Backups</h2>
+    <p>The vault file is excluded from Android backup and from iCloud backup. If you lose or erase the device, Password Wallet cannot restore it. You can export an encrypted backup file that has its own password. The app does not upload that file. Importing adds those logins to the wallet already on the device.</p>
+
+    <h2>Other details</h2>
+    <p>Settings can show cards for other apps. Tapping one opens a store search. Those cards are not on the vault list. There are no ads.</p>
+    <p>A rooted Android phone or a jailbroken iPhone shows a warning. The app keeps working and does not send that warning anywhere.</p>
+    <p>The app is not directed at children and does not knowingly collect personal information.</p>
+    <p>Version 1.0 has no accounts and no sync. If a later version adds either, this policy will change first.</p>
+    <p>Password Wallet does not run a support server. Use the contact address on the store listing to reach the developer.</p>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="../../index.html" aria-label="Hearing Assistant home"><img class="brand-logo" src="../../logo-192.png" alt="" width="38" height="38"><span>Hearing Assistant</span></a>
+    <p>Hear More. Live Better.</p>
+    <div class="footer-meta">
+      <a class="footer-policy" href="../../hearing-assistant/privacy/">Privacy policy</a>
+      <p class="fine-print">© <span id="year"></span> Hearing Assistant. Android and Google Play are trademarks of Google LLC.</p>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
