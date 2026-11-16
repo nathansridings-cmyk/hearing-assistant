@@ -93,7 +93,7 @@
 .nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.65rem 1.1rem;border-radius:999px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-weight:800;line-height:1.2;text-decoration:none}
 .nav-link:hover{background:var(--carolina-light)}
 .nav-link[aria-current="page"]{background:var(--carolina-light);border-color:#287eb6}
-.nav-link:focus-visible,.header-link:focus-visible,.guide-page a:focus-visible{outline:3px solid #287eb6;outline-offset:3px}
+.nav-link:focus-visible,.header-link:focus-visible,.guide-page a:focus-visible,.feature-section a:focus-visible{outline:3px solid #287eb6;outline-offset:3px}
 .help-section .primary-button{margin-top:.35rem}
 #disclaimer{scroll-margin-top:1rem}
 
@@ -111,7 +111,7 @@
 .guide-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1.35rem}
 .guide-steps li{display:grid;grid-template-columns:88px minmax(0,1fr);gap:1.15rem 1.35rem;align-items:start;background:#fff;border:2px solid #8eb9d4;border-radius:22px;padding:1.6rem 1.45rem 1.75rem;box-shadow:0 12px 32px rgba(9,40,70,.07)}
 .step-num{display:grid;place-items:center;width:88px;height:88px;border-radius:50%;background:var(--navy);color:#fff;font-size:48px;font-weight:800;line-height:1}
-.guide-steps h2{font-size:32px;line-height:1.2;letter-spacing:-.03em;color:var(--navy);margin:.3rem 0 .9rem}
+.guide-steps h2,.guide-steps h3{font-size:32px;line-height:1.2;letter-spacing:-.03em;color:var(--navy);margin:.3rem 0 .9rem}
 .guide-steps p{font-size:22px;line-height:1.55;color:var(--navy);margin:0 0 1.05rem}
 .guide-steps p:last-child{margin-bottom:0}
 .guide-steps strong{font-weight:800;color:#06182b}
@@ -126,7 +126,7 @@
 @media(max-width:900px){.guide-page .site-banner{height:140px}}
 @media(max-width:640px){
   .guide-steps li{grid-template-columns:1fr;gap:1rem;padding:1.35rem 1.15rem 1.5rem}
-  .guide-steps h2{margin-top:0;font-size:28px}
+  .guide-steps h2,.guide-steps h3{margin-top:0;font-size:28px}
   .step-num{width:76px;height:76px;font-size:42px}
   .guide-steps p{font-size:21px}
   .help-section .primary-button{width:100%}
@@ -138,4 +138,12 @@
 @media(max-width:560px){
   .header-nav .header-link,.header-nav .nav-link{font-size:1rem;padding:.65rem 1rem}
   .guide-page .nav-link,.guide-page .header-link{font-size:20px}
+}
+
+/* Home "Made to be easy" reuses the How to Use step cards. */
+.feature-section{background:#f7fbfe;padding-left:0;padding-right:0}
+.feature-section .section-heading{max-width:none;margin-bottom:1.75rem}
+.feature-section .nav-link{font-size:21px}
+@media(max-width:640px){
+  .feature-section .nav-link{width:100%}
 }
