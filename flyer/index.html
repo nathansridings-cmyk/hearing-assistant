@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#58a8dc">
-  <meta name="description" content="Printable Hearing Assistant door flyer for nursing and rest homes.">
-  <title>Printable flyer — Hearing Assistant</title>
+  <title>Hearing Assistant Door Flyer for Nursing and Rest Homes</title>
+  <meta name="description" content="Print a one-page door flyer for Hearing Assistant. It is a sound amplifier for phones and earbuds, for nursing and rest homes. It is not a hearing aid.">
+  <link rel="canonical" href="https://hearingassistant.app/flyer/">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" href="../logo-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="../logo-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="../logo-192.png">
@@ -82,13 +84,20 @@
       gap: 0.22in;
     }
     .logo {
-      width: 1.5in;
-      height: auto;
+      width: 1.08in;
+      height: 1.08in;
       border-radius: 0.14in;
       border: 0.035in solid var(--cyan);
       background: #062044;
       display: block;
       flex: 0 0 auto;
+      overflow: hidden;
+    }
+    .logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     h1 {
       margin: 0;
@@ -310,7 +319,10 @@
     <article class="flyer">
       <div class="sheet">
         <header class="flyer-head">
-          <img class="logo" src="../logo-source.png" alt="Hearing Assistant">
+          <picture class="logo">
+            <source srcset="../logo-512.webp" type="image/webp">
+            <img src="../logo-512.png" width="512" height="512" alt="Hearing Assistant">
+          </picture>
           <h1>Hear More.<br>Live Better.</h1>
         </header>
         <p class="intro"><strong>Hearing Assistant</strong> is a simple phone app that makes voices and sounds around you easier to hear.</p>

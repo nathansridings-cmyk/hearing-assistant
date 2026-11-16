@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /README.txt
+Disallow: /README.md
+Disallow: /WEBSITE-URL.txt
+Disallow: /facility-waitlist.gs
+Disallow: /CNAME
+Sitemap: https://hearingassistant.app/sitemap.xml
