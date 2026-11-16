@@ -2,5 +2,8 @@ Hearing Assistant marketing site
 Live site (GitHub Pages):
   https://hearingassistant.app
 
+App Store (iPhone, $4.99 one-time):
+  https://apps.apple.com/us/app/hearing-assistant-lab/id6821783192
+
 Google Play:
   https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant

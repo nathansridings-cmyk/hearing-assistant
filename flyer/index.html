@@ -74,7 +74,7 @@
       padding: 0.26in 0.32in 0.18in;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
     .flyer-head {
       display: flex;
@@ -82,7 +82,7 @@
       gap: 0.22in;
     }
     .logo {
-      width: 1.72in;
+      width: 1.5in;
       height: auto;
       border-radius: 0.14in;
       border: 0.035in solid var(--cyan);
@@ -93,20 +93,20 @@
     h1 {
       margin: 0;
       color: var(--title);
-      font-size: 0.48in;
+      font-size: 0.44in;
       line-height: 0.95;
       letter-spacing: -0.03em;
       font-weight: 800;
     }
     .intro {
-      margin: 0.14in 0 0;
+      margin: 0.08in 0 0;
       text-align: center;
-      font-size: 0.155in;
+      font-size: 0.15in;
       line-height: 1.35;
       color: #f4fbff;
     }
     .banner {
-      margin-top: 0.16in;
+      margin-top: 0.1in;
       background: var(--cyan);
       color: var(--navy);
       border-radius: 0.16in;
@@ -151,7 +151,7 @@
     }
     .benefits {
       list-style: none;
-      margin: 0.16in 0 0;
+      margin: 0.1in 0 0;
       padding: 0;
     }
     .benefits li {
@@ -159,8 +159,8 @@
       grid-template-columns: 0.32in 1fr;
       gap: 0.12in;
       align-items: start;
-      margin: 0 0 0.11in;
-      font-size: 0.168in;
+      margin: 0 0 0.08in;
+      font-size: 0.16in;
       line-height: 1.25;
     }
     .tick {
@@ -178,40 +178,55 @@
     .em { color: var(--title); font-weight: 800; }
     .pickup {
       margin-top: 0.08in;
+      display: flex;
+      flex-direction: column;
+      gap: 0.08in;
+    }
+    .pickup h2 {
+      margin: 0;
+      text-align: center;
+      font-size: 0.24in;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .store-row {
       display: grid;
-      grid-template-columns: 2.15in 1fr;
-      gap: 0.22in;
-      align-items: center;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.14in;
+      align-items: stretch;
     }
     .qr-card {
       border: 0.03in dashed var(--cyan);
       border-radius: 0.12in;
       background: #fff;
       color: var(--navy);
-      padding: 0.08in 0.08in 0.06in;
+      padding: 0.08in 0.1in 0.1in;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .qr-card img {
+    .qr-card .qr {
       display: block;
-      width: 1.9in;
+      width: 1.48in;
       height: auto;
       margin: 0 auto;
     }
     .qr-card p {
-      margin: 0.04in 0 0;
-      font-size: 0.11in;
+      margin: 0.05in 0 0;
+      font-size: 0.15in;
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.15;
     }
-    .pickup-copy h2 {
-      margin: 0 0 0.06in;
-      font-size: 0.28in;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
+    .qr-card .price {
+      margin-top: 0.02in;
+      font-size: 0.15in;
     }
+    /* Official badges, unmodified. Apple clear space is one-quarter of the badge height. */
     .play-badge {
-      display: inline-block;
-      width: 2.55in;
+      display: block;
+      width: 2.2in;
+      margin-top: 0.06in;
       line-height: 0;
       text-decoration: none;
       background: transparent;
@@ -221,14 +236,23 @@
       width: 100%;
       height: auto;
     }
-    .iphone {
-      margin: 0.02in 0 0;
-      font-size: 0.15in;
-      color: #d7f6ff;
+    .app-store-badge {
+      display: block;
+      height: 0.56in;
+      margin: 0.14in 0.14in 0.06in;
+      line-height: 0;
+      text-decoration: none;
+      background: transparent;
+    }
+    .app-store-badge img {
+      display: block;
+      height: 0.56in;
+      width: auto;
     }
     .waitlist {
-      margin: 0.08in 0 0;
-      font-size: 0.13in;
+      margin: 0;
+      text-align: center;
+      font-size: 0.14in;
       line-height: 1.3;
       color: #f4fbff;
     }
@@ -238,8 +262,8 @@
       text-underline-offset: 0.03in;
     }
     .fine {
-      margin-top: 0.12in;
-      padding-top: 0.1in;
+      margin-top: auto;
+      padding-top: 0.08in;
       border-top: 1px solid rgba(63, 208, 240, .4);
       text-align: center;
       color: #d5e7f2;
@@ -247,6 +271,10 @@
       line-height: 1.35;
     }
     .fine p { margin: 0.04in 0; }
+    .flyer, .sheet, .banner, .tick, .qr-card {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
     @page { size: letter; margin: 0; }
     @media print {
       .screen-chrome { display: none !important; }
@@ -304,22 +332,30 @@
           <li><span class="tick" aria-hidden="true">✓</span><span><span class="em">Keeps working</span> even when your phone screen is off</span></li>
         </ul>
         <div class="pickup">
-          <div class="qr-card">
-            <img src="google-play-qr.svg" width="57" height="57" alt="QR code for Hearing Assistant on Google Play">
-            <p>Scan for Google Play</p>
+          <h2>See a / in the box? Ask the front desk!</h2>
+          <div class="store-row">
+            <div class="qr-card">
+              <img class="qr" src="app-store-qr.svg" width="53" height="53" alt="QR code for Hearing Assistant Lab on the App Store">
+              <p>iPhone · App Store</p>
+              <p class="price">$4.99 one-time</p>
+              <a class="app-store-badge" href="https://apps.apple.com/us/app/hearing-assistant-lab/id6821783192" target="_blank" rel="noopener">
+                <img src="../images/download-on-the-app-store.svg" width="120" height="40" alt="Download on the App Store">
+              </a>
+            </div>
+            <div class="qr-card">
+              <img class="qr" src="google-play-qr.svg" width="57" height="57" alt="QR code for Hearing Assistant on Google Play">
+              <p>Android · Google Play</p>
+              <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant" target="_blank" rel="noopener">
+                <img src="../images/en_badge_web_generic.png" width="646" height="250" alt="Get it on Google Play">
+              </a>
+            </div>
           </div>
-          <div class="pickup-copy">
-            <h2>See a / in the box?<br>Ask the front desk!</h2>
-            <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.nathanridings.hearingassistant" target="_blank" rel="noopener">
-              <img src="../images/en_badge_web_generic.png" width="646" height="250" alt="Get it on Google Play">
-            </a>
-            <p class="iphone">iPhone version coming soon.</p>
-            <p class="waitlist">Facility waitlist:<br><a href="https://hearingassistant.app/#facility-signup">hearingassistant.app/#facility-signup</a></p>
-          </div>
+          <p class="waitlist">Facility waitlist: <a href="https://hearingassistant.app/#facility-signup">hearingassistant.app/#facility-signup</a></p>
         </div>
         <footer class="fine">
           <p>Hearing Assistant is a sound amplifier, not a medical device or hearing aid. It does not diagnose, treat, or replace a hearing aid.</p>
           <p>Free copies are limited; see the front desk for details. Questions: simpleassistapps@gmail.com · 336-783-7595</p>
+          <p>Apple, the Apple logo, iPhone, and App Store are trademarks of Apple Inc., registered in the U.S. and other countries. Android and Google Play are trademarks of Google LLC.</p>
         </footer>
       </div>
     </article>
