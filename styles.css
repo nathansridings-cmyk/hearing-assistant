@@ -217,3 +217,262 @@
 @media(max-width:640px){
   .feature-section .nav-link{width:100%}
 }
+
+/* Modest homepage link directly under the hero Google Play badge. */
+.play-with-note{display:flex;flex-direction:column;align-items:flex-start;flex:0 0 auto}
+.free-code-home-link{
+  display:inline-flex;
+  align-items:center;
+  max-width:240px;
+  min-height:48px;
+  margin:.1rem 0 .15rem;
+  color:var(--navy);
+  font-size:1.05rem;
+  font-weight:800;
+  line-height:1.3;
+  text-decoration:underline;
+  text-decoration-thickness:2px;
+  text-underline-offset:3px;
+}
+.free-code-home-link:focus-visible{outline:3px solid #287eb6;outline-offset:3px}
+@media(max-width:900px){
+  .hero .play-with-note{align-items:center}
+  .hero .free-code-home-link{justify-content:center;text-align:center}
+}
+
+/* Free Google Play code page. Reuses the guide type scale and the home aurora. */
+.free-code-page .site-banner{height:140px}
+.free-code-page .guide-intro{padding:1.35rem 0 1.45rem}
+.free-code-page h1{font-size:clamp(34px,8vw,52px);margin-bottom:.45rem}
+.free-code-page .guide-intro p{margin-bottom:.7rem}
+.free-code-page .platform-flag{
+  display:inline-block;
+  margin:0 0 .85rem;
+  padding:.4rem .9rem;
+  border-radius:999px;
+  background:#fff;
+  color:var(--navy);
+  font-size:20px;
+  font-weight:800;
+  line-height:1.3;
+}
+.free-code-stage{
+  padding:1.35rem 0 2.5rem;
+  background-color:#e7f6ff;
+  background-image:
+    radial-gradient(ellipse 46% 42% at 6% 18%, rgba(45, 212, 191, .55), transparent 72%),
+    radial-gradient(ellipse 40% 36% at 94% 12%, rgba(192, 132, 252, .42), transparent 70%),
+    radial-gradient(ellipse 42% 38% at 84% 92%, rgba(56, 189, 248, .5), transparent 72%),
+    radial-gradient(ellipse 38% 34% at 12% 90%, rgba(52, 211, 153, .42), transparent 70%),
+    radial-gradient(ellipse 32% 28% at 46% 0%, rgba(244, 114, 182, .32), transparent 68%),
+    linear-gradient(155deg, #f8fdff 0%, var(--carolina-light) 18%, #dffaf3 42%, #f3e8ff 68%, #e5f4ff 100%);
+}
+.free-code-page [hidden]{display:none !important}
+.claim-card,.iphone-box{
+  background:#fff;
+  border:3px solid #fff;
+  border-radius:22px;
+  padding:1.25rem 1.15rem 1.35rem;
+  box-shadow:0 16px 34px rgba(9,40,70,.14);
+}
+.demo-banner,.wait-note{
+  margin:0 0 1rem;
+  padding:.9rem 1rem;
+  background:#fff4cc;
+  color:#1a1a1a;
+  border:3px solid #8a6a00;
+  border-radius:14px;
+  font-size:21px;
+  font-weight:800;
+  line-height:1.4;
+}
+.wait-note{margin:1rem 0 0}
+.remaining{
+  margin:0 0 .75rem;
+  color:var(--navy);
+  font-size:22px;
+  font-weight:800;
+  line-height:1.3;
+}
+.android-only{
+  margin:0 0 .85rem;
+  color:var(--navy);
+  font-size:22px;
+  font-weight:800;
+  line-height:1.35;
+}
+.get-code-button,.copy-button,.free-code-page .primary-button{
+  font-family:inherit;
+  font-weight:800;
+  line-height:1.2;
+  cursor:pointer;
+  text-decoration:none;
+}
+.get-code-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:76px;
+  padding:1rem 1rem;
+  border:0;
+  border-radius:16px;
+  background:var(--navy);
+  color:#fff;
+  font-size:28px;
+  text-align:center;
+  box-shadow:0 10px 24px rgba(9,40,70,.22);
+}
+.get-code-button:hover{background:#0c3558}
+.get-code-button:disabled{opacity:.75;cursor:wait}
+.expiry-line,.code-note,.hint{
+  margin:.85rem 0 0;
+  color:var(--navy);
+  font-size:21px;
+  font-weight:700;
+  line-height:1.45;
+}
+.code-label{
+  margin:0 0 .45rem;
+  color:var(--navy);
+  font-size:22px;
+  font-weight:800;
+}
+.code-value{
+  margin:0 0 1rem;
+  padding:.95rem .7rem;
+  border:3px solid var(--navy);
+  border-radius:16px;
+  background:var(--carolina-light);
+  color:var(--navy);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:clamp(26px,7vw,40px);
+  font-weight:800;
+  letter-spacing:.03em;
+  line-height:1.25;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+.code-actions{display:flex;flex-direction:column;gap:.75rem}
+.copy-button,.free-code-page .code-actions .primary-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:64px;
+  padding:.85rem 1rem;
+  border-radius:14px;
+  font-size:22px;
+  text-align:center;
+}
+.copy-button{border:3px solid var(--navy);background:#fff;color:var(--navy)}
+.copy-button:hover{background:var(--carolina-light)}
+.free-code-page .code-actions .primary-button{border:0;background:var(--navy);color:#fff}
+.free-code-page .code-actions .primary-button:hover{background:#0c3558}
+.copy-status{min-height:1.4em;margin:.7rem 0 0;color:var(--green);font-size:21px;font-weight:800}
+.soldout-title{
+  margin:0 0 1rem;
+  color:var(--navy);
+  font-size:clamp(26px,6vw,34px);
+  font-weight:800;
+  line-height:1.25;
+  letter-spacing:-.03em;
+}
+.free-code-page .soldout-actions{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;margin-top:.25rem}
+.free-code-page #show-mine{margin-top:1rem}
+.free-code-page .listing-link{
+  display:inline-flex;
+  align-items:center;
+  min-height:48px;
+  color:#0b3f66;
+  font-size:21px;
+  font-weight:800;
+  text-decoration:underline;
+  text-decoration-thickness:2px;
+  text-underline-offset:4px;
+}
+.error-box{
+  margin:0 0 1rem;
+  padding:1rem 1.05rem;
+  border:3px solid #a33b32;
+  border-radius:14px;
+  background:#fdeceb;
+  color:#6f1d18;
+  font-size:21px;
+  font-weight:800;
+  line-height:1.45;
+}
+.iphone-box{margin-top:1.15rem;border-color:#8eb9d4}
+.iphone-box p{margin:0 0 .35rem;color:var(--navy);font-size:21px;font-weight:800;line-height:1.45}
+.free-code-page .iphone-box .app-store-badge{height:auto;margin:.35rem 0 .2rem}
+.free-code-steps-wrap{padding-top:1.6rem}
+.free-code-page .steps-title{
+  margin:0 0 .55rem;
+  color:var(--navy);
+  font-size:clamp(28px,5vw,36px);
+  line-height:1.15;
+  letter-spacing:-.03em;
+}
+.free-code-page .steps-lead{margin:0 0 1.15rem;color:var(--navy);font-size:21px;font-weight:700;line-height:1.45}
+.free-code-page .free-code-steps li{
+  border:3px solid transparent;
+  background-color:transparent;
+  background-repeat:no-repeat;
+  background-origin:padding-box, border-box;
+  background-clip:padding-box, border-box;
+}
+.free-code-page .free-code-steps .step-num{color:var(--navy)}
+.free-code-page .free-code-steps li:nth-child(1){
+  background-image:linear-gradient(#fff, #f5fcff), linear-gradient(120deg, #38bdf8, #5eead4);
+  box-shadow:0 16px 34px rgba(14, 165, 233, .18);
+}
+.free-code-page .free-code-steps li:nth-child(1) .step-num{
+  background:linear-gradient(160deg, #e0f7ff, #3ec6e0 62%, #99f6e4);
+}
+.free-code-page .free-code-steps li:nth-child(2){
+  background-image:linear-gradient(#fff, #f3fffb), linear-gradient(120deg, #2dd4bf, #34d399);
+  box-shadow:0 16px 34px rgba(13, 148, 136, .18);
+}
+.free-code-page .free-code-steps li:nth-child(2) .step-num{
+  background:linear-gradient(160deg, #d9fff6, #2ed3b7 60%, #86efac);
+}
+.free-code-page .free-code-steps li:nth-child(3){
+  background-image:linear-gradient(#fff, #f4fff6), linear-gradient(120deg, #34d399, #84cc16);
+  box-shadow:0 16px 34px rgba(22, 163, 74, .16);
+}
+.free-code-page .free-code-steps li:nth-child(3) .step-num{
+  background:linear-gradient(160deg, #ecfce5, #4ade80 58%, #bef264);
+}
+.free-code-page .free-code-steps li:nth-child(4){
+  background-image:linear-gradient(#fff, #fdf7ff), linear-gradient(120deg, #c084fc, #f472b6);
+  box-shadow:0 16px 34px rgba(168, 85, 247, .18);
+}
+.free-code-page .free-code-steps li:nth-child(4) .step-num{
+  background:linear-gradient(160deg, #f5d0fe, #d8b4fe 46%, #f9a8d4);
+}
+.free-code-page .free-code-steps li:nth-child(5){
+  background-image:linear-gradient(#fff, #f8fbff), linear-gradient(120deg, #60a5fa, #818cf8);
+  box-shadow:0 16px 34px rgba(37, 99, 235, .16);
+}
+.free-code-page .free-code-steps li:nth-child(5) .step-num{
+  background:linear-gradient(160deg, #e0f2fe, #93c5fd 52%, #c4b5fd);
+}
+.free-code-page .get-code-button:focus-visible,
+.free-code-page .copy-button:focus-visible,
+.free-code-page .primary-button:focus-visible,
+.free-code-page .listing-link:focus-visible,
+.free-code-page .code-value:focus-visible{
+  outline:3px solid #287eb6;
+  outline-offset:3px;
+}
+@media(min-width:700px){
+  .free-code-page .code-actions{flex-direction:row}
+  .free-code-page .code-actions > *{flex:1 1 0}
+}
+@media(max-width:900px){
+  .free-code-page .site-banner{height:96px}
+}
+@media(max-width:640px){
+  .free-code-page .soldout-actions{align-items:center;width:100%}
+  .free-code-page .soldout-actions .play-badge{width:min(240px,100%)}
+}

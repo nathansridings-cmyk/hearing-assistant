@@ -1,0 +1,3 @@
+# Copy to .dev.vars for `wrangler dev`. .dev.vars is gitignored.
+# Use a different long random value in production via `wrangler secret put HASH_SALT`.
+HASH_SALT=local-dev-salt-change-me

@@ -1,0 +1,14 @@
+name = "hearing-assistant-promo"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+# Paste the id printed by `npx wrangler d1 create hearing-promo`.
+# The placeholder below is enough for `wrangler dev` and `--local` only.
+[[d1_databases]]
+binding = "DB"
+database_name = "hearing-promo"
+database_id = "00000000-0000-0000-0000-000000000000"
+
+[vars]
+# Shortest time the page may report before a claim is accepted.
+MIN_ELAPSED_MS = "1500"
