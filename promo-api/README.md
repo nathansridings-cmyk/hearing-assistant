@@ -4,7 +4,7 @@ Small Cloudflare Worker that hands out Google Play promo codes for the Facebook 
 
 **Do not put real codes in this repo.** The GitHub repo and GitHub Pages site are public. Codes stay in a private CSV on your computer, outside the project folder. `.gitignore` ignores `*promo-codes*.csv`. The Worker stores a salted hash of the IP and of the device id. It does not store the raw IP.
 
-Each code is given out once. A later request from the same device **or** the same IP gets that same code again (a refresh shows it again). People on the same Wi-Fi, or behind the same mobile-carrier address, share one code. That is the one-per-IP rule. Google Play promo codes usually redeem once, so a second person on that network will see a code that may already be used.
+Each code is given out once, to one device. The same device id always gets that same code again, so a refresh shows it. One IP may receive up to `MAX_PER_IP` different codes (default 5, set in `wrangler.toml`). That cap is there because mobile carriers put many unrelated people behind one address. A further device on that network gets HTTP 429 and no code. It can try again from a different connection. A device that already has a code still sees its own code.
 
 ## What you need
 
@@ -101,12 +101,12 @@ npx wrangler dev
 | Request | Result |
 | --- | --- |
 | `GET /status` | Remaining count, digits only. Example: `400` |
-| `POST /claim` | JSON body `{ "deviceId": "<uuid>", "elapsedMs": 2000 }`. Success: `{ "code", "repeat" }`. Sold out: `409` `{ "error": "sold_out" }`. |
+| `POST /claim` | JSON body `{ "deviceId": "<uuid>", "elapsedMs": 2000 }`. Success: `{ "code", "repeat" }`. Sold out: `409` `{ "error": "sold_out" }`. Network cap: `429` `{ "error": "limit" }` (no code consumed). |
 | `OPTIONS` | CORS preflight for the allowlist |
 
 `elapsedMs` must be at least `MIN_ELAPSED_MS` (1500). A quicker call gets `{ "error": "too_fast" }` and does not use a code. The page sends how long it has been open.
 
-The claim is one SQLite statement:
+The claim is one SQLite statement. The `COUNT` check and the row update happen together, so two requests cannot take the same code, and an IP cannot go past `MAX_PER_IP` codes:
 
 ```sql
 UPDATE codes
@@ -114,13 +114,17 @@ SET claimed_at = ?, device_hash = ?, ip_hash = ?
 WHERE id = (SELECT id FROM codes WHERE claimed_at IS NULL ORDER BY id LIMIT 1)
   AND NOT EXISTS (
     SELECT 1 FROM codes AS taken
-    WHERE taken.device_hash = ? OR taken.ip_hash = ?
+    WHERE taken.device_hash = ?
   )
+  AND (
+    SELECT COUNT(*) FROM codes AS ip_rows
+    WHERE ip_rows.ip_hash = ?
+  ) < ?
 RETURNING code;
 ```
 
-D1 runs that statement on its own. Two requests cannot take the same row.
+D1 runs that statement on its own. Two devices never receive the same code.
 
 ## Tests
 
-`npm test` uses fake `FAKE-0001` style codes in an in-memory SQLite database. It checks concurrent claims, the same device, the same IP, sold out, `/status`, CORS, and that the raw IP is not stored.
+`npm test` uses fake `FAKE-0001` style codes in an in-memory SQLite database. It checks concurrent claims, the same device, the per-IP cap (10 devices on one IP get 5 unique codes, then HTTP 429), sold out, `/status`, CORS, and that the raw IP is not stored.

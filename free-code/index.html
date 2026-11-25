@@ -356,6 +356,10 @@
         } catch {
           data = null;
         }
+        if (data && data.error === "limit") {
+          showError("Too many codes have been claimed from this network. Please try again from a different connection.");
+          return;
+        }
         if (data && data.error === "sold_out") {
           showRemaining(0);
           showSoldOut();

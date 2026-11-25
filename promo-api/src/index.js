@@ -43,6 +43,12 @@ function minElapsedMs(env) {
   return n;
 }
 
+export function maxPerIp(env) {
+  const n = Number(env?.MAX_PER_IP);
+  if (!Number.isFinite(n) || n < 1) return 5;
+  return Math.floor(n);
+}
+
 function routePath(pathname) {
   if (pathname.length > 1 && pathname.endsWith("/")) return pathname.slice(0, -1);
   return pathname;
@@ -151,9 +157,11 @@ async function handleClaim(request, env, origin) {
     deviceHash,
     ipHash,
     now: new Date().toISOString(),
+    maxPerIp: maxPerIp(env),
   });
 
   if (!result.ok) {
+    if (result.error === "limit") return json(429, { error: "limit" }, origin);
     return json(409, { error: "sold_out" }, origin);
   }
   return json(200, { code: result.code, repeat: result.repeat }, origin);

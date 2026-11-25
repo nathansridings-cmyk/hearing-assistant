@@ -47,20 +47,58 @@ describe("claimCode", () => {
     expect(await remainingCount(db)).toBe(4);
   });
 
-  it("returns the same code when only the IP matches, or only the device matches", async () => {
+  it("gives a different code to another device on the same IP, and the same code when the device returns", async () => {
     const db = openTestDb();
     seedFakeCodes(db, 5);
     const [deviceA, ipA] = await hashes("device-a");
     const [deviceB] = await hashes("device-b");
     const [, ipB] = await hashes("ip-b");
 
-    const first = await claimCode(db, { deviceHash: deviceA, ipHash: ipA, now: "t1" });
-    const sameIp = await claimCode(db, { deviceHash: deviceB, ipHash: ipA, now: "t2" });
-    const sameDevice = await claimCode(db, { deviceHash: deviceA, ipHash: ipB, now: "t3" });
+    const first = await claimCode(db, { deviceHash: deviceA, ipHash: ipA, now: "t1", maxPerIp: 5 });
+    const sameIp = await claimCode(db, { deviceHash: deviceB, ipHash: ipA, now: "t2", maxPerIp: 5 });
+    const sameDevice = await claimCode(db, { deviceHash: deviceA, ipHash: ipB, now: "t3", maxPerIp: 5 });
 
-    expect(sameIp).toEqual({ ok: true, code: first.code, repeat: true });
+    expect(first.ok).toBe(true);
+    expect(sameIp.ok).toBe(true);
+    expect(sameIp.repeat).toBe(false);
+    expect(sameIp.code).not.toBe(first.code);
     expect(sameDevice).toEqual({ ok: true, code: first.code, repeat: true });
-    expect(await remainingCount(db)).toBe(4);
+    expect(await remainingCount(db)).toBe(3);
+  });
+
+  it("caps one IP at 5 distinct codes under concurrency, then reports limit", async () => {
+    const db = openTestDb();
+    seedFakeCodes(db, 20);
+    const [, ipHash] = await hashes("shared-network");
+
+    const results = await Promise.all(
+      Array.from({ length: 10 }, async (_, i) => {
+        const [deviceHash] = await hashes(`phone-${i}`);
+        const result = await claimCode(db, {
+          deviceHash,
+          ipHash,
+          now: "2026-11-25T00:00:00.000Z",
+          maxPerIp: 5,
+        });
+        return { deviceHash, ...result };
+      })
+    );
+
+    const codes = results.filter((result) => result.ok).map((result) => result.code);
+    expect(codes).toHaveLength(5);
+    expect(new Set(codes).size).toBe(5);
+    expect(results.filter((result) => result.error === "limit")).toHaveLength(5);
+    expect(await remainingCount(db)).toBe(15);
+
+    const winner = results.find((result) => result.ok);
+    const again = await claimCode(db, {
+      deviceHash: winner.deviceHash,
+      ipHash,
+      now: "later",
+      maxPerIp: 5,
+    });
+    expect(again).toEqual({ ok: true, code: winner.code, repeat: true });
+    expect(await remainingCount(db)).toBe(15);
   });
 
   it("prefers the device's own code when the device and IP point at different rows", async () => {

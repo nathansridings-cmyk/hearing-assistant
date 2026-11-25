@@ -12,3 +12,6 @@ database_id = "00000000-0000-0000-0000-000000000000"
 [vars]
 # Shortest time the page may report before a claim is accepted.
 MIN_ELAPSED_MS = "1500"
+# Distinct codes one IP hash may receive. Carrier-grade NAT shares an IP
+# across many people, so this is a cap, not a single shared code.
+MAX_PER_IP = "5"

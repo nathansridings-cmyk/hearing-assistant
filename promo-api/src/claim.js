@@ -1,12 +1,11 @@
 // One statement claims a single unclaimed row. SQLite (and D1) run that
 // write atomically, so two callers cannot receive the same code.
-// If this device or this IP already has a row, the UPDATE matches nothing
-// and the caller re-reads the earlier code.
+// The same device always gets the code it already holds. One IP may hold
+// up to maxPerIp different codes (one per device). Past that, nothing is written.
 
-const FIND_EXISTING = `
+const FIND_DEVICE = `
   SELECT code FROM codes
-  WHERE device_hash = ? OR ip_hash = ?
-  ORDER BY CASE WHEN device_hash = ? THEN 0 ELSE 1 END, id
+  WHERE device_hash = ?
   LIMIT 1
 `;
 
@@ -23,11 +22,16 @@ const CLAIM_ONE = `
   )
   AND NOT EXISTS (
     SELECT 1 FROM codes AS taken
-    WHERE taken.device_hash = ? OR taken.ip_hash = ?
+    WHERE taken.device_hash = ?
   )
+  AND (
+    SELECT COUNT(*) FROM codes AS ip_rows
+    WHERE ip_rows.ip_hash = ?
+  ) < ?
   RETURNING code
 `;
 
+const IP_COUNT = `SELECT COUNT(*) AS n FROM codes WHERE ip_hash = ?`;
 const REMAINING = `SELECT COUNT(*) AS n FROM codes WHERE claimed_at IS NULL`;
 
 async function firstRow(statement) {
@@ -36,10 +40,15 @@ async function firstRow(statement) {
   return rows[0] ?? null;
 }
 
-export async function claimCode(db, { deviceHash, ipHash, now }) {
-  const existing = await firstRow(
-    db.prepare(FIND_EXISTING).bind(deviceHash, ipHash, deviceHash)
-  );
+function normalizeLimit(maxPerIp) {
+  const n = Number(maxPerIp);
+  if (!Number.isFinite(n) || n < 1) return 5;
+  return Math.floor(n);
+}
+
+export async function claimCode(db, { deviceHash, ipHash, now, maxPerIp = 5 }) {
+  const limit = normalizeLimit(maxPerIp);
+  const existing = await firstRow(db.prepare(FIND_DEVICE).bind(deviceHash));
   if (existing?.code) {
     return { ok: true, code: existing.code, repeat: true };
   }
@@ -47,10 +56,10 @@ export async function claimCode(db, { deviceHash, ipHash, now }) {
   let claimed = null;
   try {
     claimed = await firstRow(
-      db.prepare(CLAIM_ONE).bind(now, deviceHash, ipHash, deviceHash, ipHash)
+      db.prepare(CLAIM_ONE).bind(now, deviceHash, ipHash, deviceHash, ipHash, limit)
     );
   } catch (err) {
-    // Unique index: a concurrent claim for this device or IP won.
+    // Unique index: a concurrent claim for this device won the row.
     const message = String(err?.message || err);
     if (!/unique/i.test(message)) throw err;
   }
@@ -59,12 +68,16 @@ export async function claimCode(db, { deviceHash, ipHash, now }) {
     return { ok: true, code: claimed.code, repeat: false };
   }
 
-  const again = await firstRow(
-    db.prepare(FIND_EXISTING).bind(deviceHash, ipHash, deviceHash)
-  );
+  const again = await firstRow(db.prepare(FIND_DEVICE).bind(deviceHash));
   if (again?.code) {
     return { ok: true, code: again.code, repeat: true };
   }
+
+  const left = await remainingCount(db);
+  if (left === 0) return { ok: false, error: "sold_out" };
+
+  const used = await firstRow(db.prepare(IP_COUNT).bind(ipHash));
+  if (Number(used?.n ?? 0) >= limit) return { ok: false, error: "limit" };
   return { ok: false, error: "sold_out" };
 }
 

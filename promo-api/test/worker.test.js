@@ -40,7 +40,7 @@ describe("worker HTTP", () => {
     expect(res.headers.get("access-control-allow-origin")).toBe(ORIGIN);
   });
 
-  it("claims a fake code once per device and per IP, including concurrently", async () => {
+  it("claims each fake code once, including concurrently", async () => {
     const db = openTestDb();
     seedFakeCodes(db, 10);
     const env = envFor(db);
@@ -77,7 +77,7 @@ describe("worker HTTP", () => {
     expect(await (await worker.fetch(new Request("https://promo.example/status"), env)).text()).toBe("0");
   });
 
-  it("gives a second device on the same IP the original code", async () => {
+  it("gives a second device on the same IP its own code", async () => {
     const db = openTestDb();
     seedFakeCodes(db, 4);
     const env = envFor(db);
@@ -86,8 +86,72 @@ describe("worker HTTP", () => {
     const firstBody = await first.json();
     const secondBody = await second.json();
     expect(second.status).toBe(200);
-    expect(secondBody).toEqual({ code: firstBody.code, repeat: true });
-    expect(await (await worker.fetch(new Request("https://promo.example/status"), env)).text()).toBe("3");
+    expect(secondBody.repeat).toBe(false);
+    expect(secondBody.code).not.toBe(firstBody.code);
+    expect(secondBody.code.startsWith("FAKE-")).toBe(true);
+    expect(await (await worker.fetch(new Request("https://promo.example/status"), env)).text()).toBe("2");
+  });
+
+  it("allows 5 codes for one IP concurrently, then returns 429 without consuming more", async () => {
+    const db = openTestDb();
+    seedFakeCodes(db, 20);
+    const env = envFor(db);
+    const ip = "203.0.113.80";
+
+    const results = await Promise.all(
+      Array.from({ length: 10 }, async (_, i) => {
+        const deviceId = uuid(i + 1);
+        const res = await worker.fetch(claimRequest({ deviceId, ip }), env);
+        return { deviceId, status: res.status, body: await res.json() };
+      })
+    );
+
+    const claimed = results.filter((result) => result.status === 200);
+    const limited = results.filter((result) => result.status === 429);
+    const codes = claimed.map((result) => result.body.code);
+    expect(claimed).toHaveLength(5);
+    expect(new Set(codes).size).toBe(5);
+    expect(codes.every((code) => code.startsWith("FAKE-"))).toBe(true);
+    expect(limited).toHaveLength(5);
+    expect(limited.every((result) => result.body.error === "limit")).toBe(true);
+    expect(await (await worker.fetch(new Request("https://promo.example/status"), env)).text()).toBe("15");
+
+    const winner = claimed[0];
+    const again = await worker.fetch(claimRequest({ deviceId: winner.deviceId, ip }), env);
+    expect(again.status).toBe(200);
+    expect(await again.json()).toEqual({ code: winner.body.code, repeat: true });
+
+    const extra = await worker.fetch(claimRequest({ deviceId: uuid(90), ip }), env);
+    expect(extra.status).toBe(429);
+    expect(await extra.json()).toEqual({ error: "limit" });
+    expect(await (await worker.fetch(new Request("https://promo.example/status"), env)).text()).toBe("15");
+
+    const elsewhere = await worker.fetch(claimRequest({
+      deviceId: uuid(91),
+      ip: "203.0.113.81",
+    }), env);
+    expect(elsewhere.status).toBe(200);
+    const elsewhereBody = await elsewhere.json();
+    expect(codes).not.toContain(elsewhereBody.code);
+    expect(await (await worker.fetch(new Request("https://promo.example/status"), env)).text()).toBe("14");
+  });
+
+  it("honors MAX_PER_IP from the environment", async () => {
+    const db = openTestDb();
+    seedFakeCodes(db, 6);
+    const env = envFor(db, { MAX_PER_IP: "2" });
+    const ip = "198.51.100.20";
+    const first = await worker.fetch(claimRequest({ deviceId: uuid(1), ip }), env);
+    const second = await worker.fetch(claimRequest({ deviceId: uuid(2), ip }), env);
+    const third = await worker.fetch(claimRequest({ deviceId: uuid(3), ip }), env);
+    const firstBody = await first.json();
+    const secondBody = await second.json();
+    expect(first.status).toBe(200);
+    expect(second.status).toBe(200);
+    expect(firstBody.code).not.toBe(secondBody.code);
+    expect(third.status).toBe(429);
+    expect(await third.json()).toEqual({ error: "limit" });
+    expect(await (await worker.fetch(new Request("https://promo.example/status"), env)).text()).toBe("4");
   });
 
   it("does not store the raw IP", async () => {
