@@ -7,7 +7,7 @@ compatibility_date = "2026-11-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "hearing-promo"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "6bc3f1a6-ab25-4abc-a372-471fb7989a39"
 
 [vars]
 # Shortest time the page may report before a claim is accepted.
