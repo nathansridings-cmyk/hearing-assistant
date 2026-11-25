@@ -1,0 +1,13 @@
+{
+  "name": "hearing-assistant-promo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "dev": "wrangler dev",
+    "import-codes": "node scripts/import-codes.mjs"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,17 @@
+name = "hearing-assistant-promo"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+# Paste the id printed by `npx wrangler d1 create hearing-promo`.
+# The placeholder below is enough for `wrangler dev` and `--local` only.
+[[d1_databases]]
+binding = "DB"
+database_name = "hearing-promo"
+database_id = "6bc3f1a6-ab25-4abc-a372-471fb7989a39"
+
+[vars]
+# Shortest time the page may report before a claim is accepted.
+MIN_ELAPSED_MS = "1500"
+# Distinct codes one IP hash may receive. Carrier-grade NAT shares an IP
+# across many people, so this is a cap, not a single shared code.
+MAX_PER_IP = "5"

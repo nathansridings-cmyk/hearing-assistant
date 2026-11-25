@@ -1,0 +1,7 @@
+# Private Google Play promo codes. Never commit these.
+*promo-codes*.csv
+
+# Worker local state, secrets, and dependencies
+promo-api/.wrangler/
+promo-api/.dev.vars
+promo-api/node_modules/
